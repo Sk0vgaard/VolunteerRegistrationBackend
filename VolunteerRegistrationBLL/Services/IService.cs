@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-namespace VolunteerRegistrationBLL
+namespace VolunteerRegistrationBLL.Services
 {
     public interface IService<IBusinessObject>
     {
@@ -16,6 +17,6 @@ namespace VolunteerRegistrationBLL
         IBusinessObject Update(IBusinessObject bo);
 
         //D
-        IBusinessObject Delete(int Id);
+        Boolean Delete(int Id);
     }
 }

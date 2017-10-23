@@ -1,7 +1,7 @@
-﻿namespace VolunteerRegistrationBLL
+﻿namespace VolunteerRegistrationBLL.Facade
 {
     public interface IBLLFacade
     {
-        //ICustomerService CustomerService { get { return new CustomerService(facade); }
+
     }
 }
