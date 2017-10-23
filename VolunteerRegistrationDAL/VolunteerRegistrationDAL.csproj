@@ -10,9 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UOW\" />
     <Folder Include="Entities\" />
-    <Folder Include="Facade\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Entities\Address.cs" />
