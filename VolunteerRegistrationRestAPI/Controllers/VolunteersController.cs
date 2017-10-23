@@ -13,10 +13,10 @@ namespace VolunteerRegistrationRestAPI.Controllers
     {
         private readonly IVolunteerService _service;
 
-        public VolunteersController(IBLLFacade facade)
+        public VolunteersController(IVolunteerService service)
         {
             // The IBLLFacade will "magically" be instatiated from the Startup -> ConfigureServices -> services.AddScoped!
-            _service = new VolunteerService(facade.DALFacade);
+            _service = service;
         }
 
         // GET: api/Volunteers

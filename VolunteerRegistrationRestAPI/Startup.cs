@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using VolunteerRegistrationBLL.Facade;
+using VolunteerRegistrationBLL.Services;
+using VolunteerRegistrationBLL.Services.Interfaces;
 using VolunteerRegistrationDAL.Context;
 using VolunteerRegistrationDAL.Facade;
 using VolunteerRegistrationDAL.UOW;
@@ -50,6 +52,8 @@ namespace VolunteerRegistrationRestAPI
             services.AddScoped<IBLLFacade, BLLFacade>();
             services.AddScoped<IDALFacade, DALFacade>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            // Add services!
+            services.AddScoped<IVolunteerService, VolunteerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
