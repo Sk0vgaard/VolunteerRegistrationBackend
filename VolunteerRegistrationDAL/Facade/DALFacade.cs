@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using VolunteerRegistrationDAL.Context;
 using VolunteerRegistrationDAL.UOW;
 
 [assembly: InternalsVisibleTo("VRBDALTests")]
@@ -6,13 +7,13 @@ namespace VolunteerRegistrationDAL.Facade
 {
     public class DALFacade : IDALFacade
     {
-        private readonly DbOptions opt;
+        private readonly VolunteerRegistrationContext _context;
 
-        public DALFacade(DbOptions opt)
+        public DALFacade(VolunteerRegistrationContext context)
         {
-            this.opt = opt;
+           _context = context;
         }
 
-        public IUnitOfWork UnitOfWork => new UnitOfWork(opt);
+        public IUnitOfWork UnitOfWork => new UnitOfWork(_context);
     }
 }

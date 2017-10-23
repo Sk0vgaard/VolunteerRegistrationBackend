@@ -10,22 +10,9 @@ namespace VolunteerRegistrationDAL.UOW
 
         public IVolunteerRepository VolunteerRepository { get; }
 
-        public UnitOfWork(DbOptions opt)
+        public UnitOfWork(VolunteerRegistrationContext context)
         {
-            if (opt.Environment == "Development" && string.IsNullOrEmpty(opt.ConnectionString))
-            {
-                var optionsStatic = new DbContextOptionsBuilder<VolunteerRegistrationContext>()
-                    .UseInMemoryDatabase("TheDB")
-                    .Options;
-                _context = new VolunteerRegistrationContext(optionsStatic);
-            }
-            else
-            {
-                var options = new DbContextOptionsBuilder<VolunteerRegistrationContext>()
-                    .UseSqlServer(opt.ConnectionString)
-                    .Options;
-                _context = new VolunteerRegistrationContext(options);
-            }
+            _context = context;
 
             VolunteerRepository = new VolunteerRepository(_context);
         }

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using VolunteerRegistrationBLL.Services;
 using VolunteerRegistrationBLL.Services.Interfaces;
 using VolunteerRegistrationDAL;
+using VolunteerRegistrationDAL.Context;
 using VolunteerRegistrationDAL.Facade;
 
 [assembly: InternalsVisibleTo("VRBBLLTests")]
@@ -14,16 +15,11 @@ namespace VolunteerRegistrationBLL.Facade
     public class BLLFacade : IBLLFacade
     {
         public IDALFacade DALFacade { get; }
-        public IVolunteerService VolunteerService => new VolunteerService(DALFacade);
 
-
-        public BLLFacade(IConfiguration conf)
+        public BLLFacade(IDALFacade dalFacade)
         {
-            DALFacade = new DALFacade(new DbOptions
-            {
-                ConnectionString = conf.GetConnectionString("DefaultConnection"),
-                Environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
-            });
+            DALFacade = dalFacade;
         }
+        public IVolunteerService VolunteerService => new VolunteerService(DALFacade);
     }
 }

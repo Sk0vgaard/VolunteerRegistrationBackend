@@ -1,19 +1,18 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using VolunteerRegistrationBLL.Facade;
-using VolunteerRegistrationBLL.Services;
+using VolunteerRegistrationDAL.Context;
 using VolunteerRegistrationDAL.Facade;
+using VolunteerRegistrationDAL.UOW;
 
 namespace VolunteerRegistrationRestAPI
 {
     public class Startup
     {
-
-        public IConfiguration Configuration { get; }
-
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -22,7 +21,12 @@ namespace VolunteerRegistrationRestAPI
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+            Environment = env;
         }
+
+        private IHostingEnvironment Environment { get; }
+
+        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -37,7 +41,15 @@ namespace VolunteerRegistrationRestAPI
             }));
 
             services.AddSingleton(Configuration);
+
+            if (Environment.IsDevelopment())
+                services.AddDbContext<VolunteerRegistrationContext>(opt => opt.UseInMemoryDatabase("VR"));
+            else
+                services.AddDbContext<VolunteerRegistrationContext>(opt => opt.UseSqlServer($"{Configuration["DefaultConnection"]}"));
+
             services.AddScoped<IBLLFacade, BLLFacade>();
+            services.AddScoped<IDALFacade, DALFacade>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
