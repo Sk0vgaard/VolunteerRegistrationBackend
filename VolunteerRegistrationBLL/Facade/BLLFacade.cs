@@ -10,12 +10,13 @@ namespace VolunteerRegistrationBLL.Facade
 {
     public class BLLFacade : IBLLFacade
     {
+        private readonly IDALFacade _dalFacade;
+
         public BLLFacade(IDALFacade dalFacade)
         {
-            DALFacade = dalFacade;
+            _dalFacade = dalFacade;
         }
 
-        public IDALFacade DALFacade { get; }
-        public IVolunteerService VolunteerService => new VolunteerService(DALFacade);
+        public IVolunteerService VolunteerService => new VolunteerService(_dalFacade);
     }
 }

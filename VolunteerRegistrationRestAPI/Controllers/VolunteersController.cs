@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using VolunteerRegistrationBLL.BusinessObjects;
-using VolunteerRegistrationBLL.Facade;
-using VolunteerRegistrationBLL.Services;
 using VolunteerRegistrationBLL.Services.Interfaces;
 
 namespace VolunteerRegistrationRestAPI.Controllers

@@ -1,12 +1,9 @@
-﻿using VolunteerRegistrationBLL.Services;
-using VolunteerRegistrationBLL.Services.Interfaces;
-using VolunteerRegistrationDAL.Facade;
+﻿using VolunteerRegistrationBLL.Services.Interfaces;
 
 namespace VolunteerRegistrationBLL.Facade
 {
     public interface IBLLFacade
     {
-        IDALFacade DALFacade { get;}
         IVolunteerService VolunteerService { get; }
     }
 }
