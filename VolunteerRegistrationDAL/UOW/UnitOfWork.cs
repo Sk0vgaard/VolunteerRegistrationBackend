@@ -1,44 +1,44 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VolunteerRegistrationDAL.Context;
+using VolunteerRegistrationDAL.Repositories;
 
 namespace VolunteerRegistrationDAL.UOW
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private static DbContextOptions<EASVContext> optionsStatic;
+        private readonly VolunteerRegistrationContext _context;
 
-        // public ICustomerRepository CustomerRepository { get; internal set; }
-        private readonly EASVContext context;
+        public IVolunteerRepository VolunteerRepository { get; }
 
         public UnitOfWork(DbOptions opt)
         {
             if (opt.Environment == "Development" && string.IsNullOrEmpty(opt.ConnectionString))
             {
-                optionsStatic = new DbContextOptionsBuilder<EASVContext>()
+                var optionsStatic = new DbContextOptionsBuilder<VolunteerRegistrationContext>()
                     .UseInMemoryDatabase("TheDB")
                     .Options;
-                context = new EASVContext(optionsStatic);
+                _context = new VolunteerRegistrationContext(optionsStatic);
             }
             else
             {
-                var options = new DbContextOptionsBuilder<EASVContext>()
+                var options = new DbContextOptionsBuilder<VolunteerRegistrationContext>()
                     .UseSqlServer(opt.ConnectionString)
                     .Options;
-                context = new EASVContext(options);
+                _context = new VolunteerRegistrationContext(options);
             }
 
-            //CustomerRepository = new CustomerRepository(context);
+            VolunteerRepository = new VolunteerRepository(_context);
         }
 
         public int Complete()
         {
             //The number of objects written to the underlying database.
-            return context.SaveChanges();
+            return _context.SaveChanges();
         }
 
         public void Dispose()
         {
-            context.Dispose();
+            _context.Dispose();
         }
     }
 }

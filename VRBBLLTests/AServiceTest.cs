@@ -1,5 +1,7 @@
 ﻿using Moq;
 using VolunteerRegistrationDAL;
+using VolunteerRegistrationDAL.Facade;
+using VolunteerRegistrationDAL.UOW;
 
 namespace VRBBLLTests
 {

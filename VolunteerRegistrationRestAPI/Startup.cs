@@ -3,17 +3,16 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using VolunteerRegistrationBLL;
 using VolunteerRegistrationBLL.Facade;
+using VolunteerRegistrationBLL.Services;
+using VolunteerRegistrationDAL.Facade;
 
 namespace VolunteerRegistrationRestAPI
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+
+        public IConfiguration Configuration { get; }
 
         public Startup(IHostingEnvironment env)
         {
@@ -24,8 +23,6 @@ namespace VolunteerRegistrationRestAPI
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
