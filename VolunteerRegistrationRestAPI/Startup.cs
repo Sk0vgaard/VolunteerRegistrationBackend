@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -24,7 +25,6 @@ namespace VolunteerRegistrationRestAPI
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", false, true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
             Environment = env;
@@ -44,11 +44,10 @@ namespace VolunteerRegistrationRestAPI
             //}));
 
             services.AddSingleton(Configuration);
-
             if (Environment.IsDevelopment())
                 services.AddDbContext<VolunteerRegistrationContext>(opt => opt.UseInMemoryDatabase("VR"));
             else
-                services.AddDbContext<VolunteerRegistrationContext>(opt => opt.UseSqlServer($"{Configuration["DefaultConnection"]}"));
+                services.AddDbContext<VolunteerRegistrationContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IBLLFacade, BLLFacade>();
             services.AddScoped<IDALFacade, DALFacade>();
