@@ -10,8 +10,8 @@ namespace VolunteerRegistrationDAL
 
         IEnumerable<IEntity> GetAll(List<int> ids);
 
-        IEntity Get(int Id);
+        IEntity Get(int id);
 
-        IEntity Delete(int Id);
+        IEntity Delete(int id);
     }
 }

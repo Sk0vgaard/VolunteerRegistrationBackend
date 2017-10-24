@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using VolunteerRegistrationDAL.Context;
 using VolunteerRegistrationDAL.Entities;
 using VolunteerRegistrationDAL.Repositories;
@@ -25,6 +27,14 @@ namespace VRBDALTests
             return createdEntity;
         }
 
+        private Volunteer CreateSecondMockVolunteer()
+        {
+            var mock = new Volunteer{Id = 2, Name = "Mock"};
+            var createdEntity = _repository.Create(mock);
+            _context.SaveChanges();
+            return createdEntity;
+        }
+
         [Fact]
         public void CreateOne()
         {
@@ -36,7 +46,16 @@ namespace VRBDALTests
         [Fact]
         public void DeleteByExistingId()
         {
-            throw new NotImplementedException();
+            var createdEntity = CreateMockVolunteer();
+
+            var entityInList = _repository.GetAll().FirstOrDefault(v => v == createdEntity);
+            Assert.NotNull(entityInList);
+
+            var deletedEntity = _repository.Delete(createdEntity.Id);
+            _context.SaveChanges();
+
+            entityInList = _repository.GetAll().FirstOrDefault(v => v == deletedEntity);
+            Assert.Null(entityInList);
         }
 
         [Fact]
@@ -52,7 +71,11 @@ namespace VRBDALTests
         [Fact]
         public void GetAllByExistingIds()
         {
-            throw new NotImplementedException();
+            var createdEntity = CreateMockVolunteer();
+            CreateSecondMockVolunteer();
+
+            var foundEntity = _repository.Get(createdEntity.Id);
+            Assert.NotNull(foundEntity);
         }
 
         [Fact]
@@ -66,19 +89,31 @@ namespace VRBDALTests
         [Fact]
         public void NotDeleteByNonExistingId()
         {
-            throw new NotImplementedException();
+            var entityWithFalseId = _repository.Delete(3);
+
+            Assert.Null(entityWithFalseId);
         }
 
         [Fact]
         public void NotGetAllByNonExistingIds()
         {
-            throw new NotImplementedException();
+            CreateMockVolunteer();
+            CreateSecondMockVolunteer();
+
+            var entitiesWithFalseIds = _repository.GetAll(new List<int>{3,4});
+
+            Assert.Empty(entitiesWithFalseIds);
         }
 
         [Fact]
         public void NotGetOneByNonExistingId()
         {
-            throw new NotImplementedException();
+            CreateMockVolunteer();
+            CreateSecondMockVolunteer();
+
+            var entity = _repository.Get(3);
+
+            Assert.Null(entity);
         }
 
         [Fact]
