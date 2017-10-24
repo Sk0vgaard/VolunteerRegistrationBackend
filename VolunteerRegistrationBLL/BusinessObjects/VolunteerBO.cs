@@ -1,8 +1,9 @@
 ﻿namespace VolunteerRegistrationBLL.BusinessObjects
 {
-    public class VolunteerBO : IBusinessObject
+    public class VolunteerBO : APersonBO
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+
     }
 }

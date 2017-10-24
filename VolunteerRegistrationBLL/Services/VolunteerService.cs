@@ -21,6 +21,7 @@ namespace VolunteerRegistrationBLL.Services
 
         public VolunteerBO Create(VolunteerBO bo)
         {
+            if (bo == null) return null;
             using (var unitOfWork = _facade.UnitOfWork)
             {
                 var createdBO = unitOfWork.VolunteerRepository.Create(_volunteerConverter.Convert(bo));
@@ -37,19 +38,46 @@ namespace VolunteerRegistrationBLL.Services
             }
         }
 
-        public VolunteerBO Get(int Id)
+        public List<VolunteerBO> GetAll(List<int> ids)
         {
-            throw new NotImplementedException();
+            using (var unitOfWork = _facade.UnitOfWork)
+            {
+                return unitOfWork.VolunteerRepository.GetAll(ids).Select(_volunteerConverter.Convert).ToList();
+            }
+        }
+
+        public VolunteerBO Get(int id)
+        {
+            using (var unitOfWork = _facade.UnitOfWork)
+            {
+                return _volunteerConverter.Convert(unitOfWork.VolunteerRepository.Get(id));
+            }
         }
 
         public VolunteerBO Update(VolunteerBO bo)
         {
-            throw new NotImplementedException();
+            using (var unitOfWork = _facade.UnitOfWork)
+            {
+                var entityToUpdate = unitOfWork.VolunteerRepository.Get(bo.Id);
+
+                entityToUpdate.Name = bo.Name;
+                entityToUpdate.Email = bo.Email;
+                entityToUpdate.Phone = bo.Phone;
+
+                unitOfWork.Complete();
+
+                return bo;
+            }
         }
 
-        public bool Delete(int Id)
+        public bool Delete(int id)
         {
-            throw new NotImplementedException();
+            using (var unitOfWork = _facade.UnitOfWork)
+            {
+                var entityToDelete = unitOfWork.VolunteerRepository.Delete(id);
+                if (entityToDelete == null) return false;
+                return true;
+            }
         }
     }
 }
