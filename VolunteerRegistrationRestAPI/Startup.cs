@@ -15,6 +15,10 @@ namespace VolunteerRegistrationRestAPI
 {
     public class Startup
     {
+        private IHostingEnvironment Environment { get; }
+
+        private IConfiguration Configuration { get; }
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -25,10 +29,6 @@ namespace VolunteerRegistrationRestAPI
             Configuration = builder.Build();
             Environment = env;
         }
-
-        private IHostingEnvironment Environment { get; }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
