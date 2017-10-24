@@ -15,5 +15,6 @@ namespace VolunteerRegistrationDAL.Context
         }
 
         public DbSet<Volunteer> volunteers { get; set; }
+        public DbSet<Guild> guilds { get; set; }
     }
 }
