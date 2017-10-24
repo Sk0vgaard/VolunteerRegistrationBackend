@@ -28,13 +28,8 @@ namespace VolunteerRegistrationDAL.Repositories
 
         public IEnumerable<Guild> GetAll(List<int> ids)
         {
-            //var listFoundEntities = new List<Guild>();
             return _context.guilds.Where(g => ids.Contains(g.Id)).ToList();
-            //foreach (int id in ids)
-            //{
-            //    listFoundEntities.Add(_context.guilds.FirstOrDefault(g => g.Id == id));
-            //}
-            //return listFoundEntities;
+
         }
 
         public Guild Get(int Id)
