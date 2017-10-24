@@ -1,8 +1,10 @@
-﻿namespace VolunteerRegistrationBLL.BusinessObjects
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace VolunteerRegistrationBLL.BusinessObjects
 {
     public class VolunteerBO : APersonBO
     {
-        public string Email { get; set; }
+        [Required]
         public string Phone { get; set; }
 
     }
