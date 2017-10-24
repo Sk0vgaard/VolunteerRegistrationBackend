@@ -37,10 +37,11 @@ namespace VRBBLLTests
         [Fact]
         public override void DeleteByExistingId()
         {
-            _mockVolunteerRepo.Setup(r => r.Delete(It.IsAny<int>())).Returns(new Volunteer());
-
-            var existingId = 1;
-            var deleted = _service.Delete(existingId);
+            var entity = new VolunteerBO{Id = 1};
+            _mockVolunteerRepo.Setup(r => r.Delete(entity.Id)).Returns(new Volunteer{Id = 1});
+            _mockVolunteerRepo.Setup(r => r.Get(It.IsAny<int>())).Returns(new Volunteer());
+            
+            var deleted = _service.Delete(entity.Id);
 
             Assert.True(deleted);
         }
