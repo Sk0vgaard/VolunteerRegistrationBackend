@@ -20,7 +20,6 @@ namespace VolunteerRegistrationRestAPI
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", false, true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
             Environment = env;
@@ -28,26 +27,26 @@ namespace VolunteerRegistrationRestAPI
 
         private IHostingEnvironment Environment { get; }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
 
-            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
-            {
-                builder.WithOrigins("http://localhost:4200")
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
-            }));
+            // Killed "The Lars approach"
+            //services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            //{
+            //    builder.WithOrigins("http://localhost:4200")
+            //        .AllowAnyMethod()
+            //        .AllowAnyHeader();
+            //}));
 
             services.AddSingleton(Configuration);
-
             if (Environment.IsDevelopment())
                 services.AddDbContext<VolunteerRegistrationContext>(opt => opt.UseInMemoryDatabase("VR"));
             else
-                services.AddDbContext<VolunteerRegistrationContext>(opt => opt.UseSqlServer($"{Configuration["DefaultConnection"]}"));
+                services.AddDbContext<VolunteerRegistrationContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IBLLFacade, BLLFacade>();
             services.AddScoped<IDALFacade, DALFacade>();
@@ -66,6 +65,11 @@ namespace VolunteerRegistrationRestAPI
 
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4200")
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
 
             app.UseMvc();
         }

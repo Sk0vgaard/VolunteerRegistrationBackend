@@ -17,9 +17,6 @@
         void DeleteByExistingId();
 
         void NotDeleteByNonExistingId();
-
-        void UpdateByExistingId();
-
-        void NotUpdateByNonExistingId();
+        
     }
 }

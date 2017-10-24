@@ -26,27 +26,38 @@ namespace VolunteerRegistrationRestAPI.Controllers
 
         // GET: api/Volunteers/5
         [HttpGet("{id}", Name = "GetVolunteers")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            var volunteer = _service.Get(id);
+            if (volunteer == null) return NotFound();
+            return Ok(volunteer);
         }
 
         // POST: api/Volunteers
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] VolunteerBO volunteer)
         {
+            if(!ModelState.IsValid) return BadRequest(ModelState);
+            return Ok(_service.Create(volunteer));
         }
 
         // PUT: api/Volunteers/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] VolunteerBO volunteer)
         {
+            if (id != volunteer.Id) return BadRequest("Id does not match volunteer id!");
+            var updatedVolunteer = _service.Update(volunteer);
+            if (updatedVolunteer == null) return NotFound();
+            return Ok(updatedVolunteer);
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            var deleted = _service.Delete(id);
+            if (deleted == false) return NotFound();
+            return Ok();
         }
     }
 }
