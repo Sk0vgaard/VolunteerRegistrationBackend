@@ -139,8 +139,7 @@ namespace VRBBLLTests
         {
             _mockVolunteerRepo.Setup(r => r.Get(It.IsAny<int>())).Returns(() => null);
 
-            var nonExistingId = 0;
-            var entity = _service.Get(nonExistingId);
+            var entity = _service.Update(new VolunteerBO());
 
             Assert.Null(entity);
         }

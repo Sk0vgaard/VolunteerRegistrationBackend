@@ -59,6 +59,7 @@ namespace VolunteerRegistrationBLL.Services
             using (var unitOfWork = _facade.UnitOfWork)
             {
                 var entityToUpdate = unitOfWork.VolunteerRepository.Get(bo.Id);
+                if (entityToUpdate == null) return null;
 
                 entityToUpdate.Name = bo.Name;
                 entityToUpdate.Email = bo.Email;
