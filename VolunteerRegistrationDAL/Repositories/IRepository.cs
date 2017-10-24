@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace VolunteerRegistrationDAL
+namespace VolunteerRegistrationDAL.Repositories
 {
     public interface IRepository<IEntity>
     {

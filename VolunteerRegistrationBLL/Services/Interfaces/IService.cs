@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace VolunteerRegistrationBLL.Services
+namespace VolunteerRegistrationBLL.Services.Interfaces
 {
     public interface IService<IBusinessObject>
     {
