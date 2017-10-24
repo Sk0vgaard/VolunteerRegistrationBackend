@@ -115,17 +115,5 @@ namespace VRBDALTests
 
             Assert.Null(entity);
         }
-
-        [Fact]
-        public void NotUpdateByNonExistingId()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Fact]
-        public void UpdateByExistingId()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
