@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using VolunteerRegistrationBLL.BusinessObjects;
 using VolunteerRegistrationBLL.Converters;
@@ -27,7 +28,10 @@ namespace VolunteerRegistrationBLL.Services
 
         public List<GuildBO> GetAll()
         {
-            throw new NotImplementedException();
+            using (var uow = _facade.UnitOfWork)
+            {
+                return uow.GuildRepository.GetAll().Select(_guildConverter.Convert).ToList();
+            }
         }
 
         public List<GuildBO> GetAll(List<int> ids)
@@ -37,7 +41,10 @@ namespace VolunteerRegistrationBLL.Services
 
         public GuildBO Get(int id)
         {
-            throw new NotImplementedException();
+            using (var uow = _facade.UnitOfWork)
+            {
+                return _guildConverter.Convert(uow.GuildRepository.Get(id));
+            }
         }
 
         public GuildBO Update(GuildBO bo)
