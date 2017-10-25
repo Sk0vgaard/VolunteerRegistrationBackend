@@ -26,7 +26,10 @@ namespace VRBBLLTests
         [Fact]
         public override void CreateOne()
         {
-            throw new NotImplementedException();
+            _mockGuildRepo.Setup(r => r.Create(It.IsAny<Guild>())).Returns(new Guild());
+            var entity = _service.Create(new GuildBO());
+            Assert.NotNull(entity);
+
         }
         [Fact]
         public override void GetAll()

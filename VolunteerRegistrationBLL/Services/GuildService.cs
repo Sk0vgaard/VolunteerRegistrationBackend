@@ -23,7 +23,11 @@ namespace VolunteerRegistrationBLL.Services
 
         public GuildBO Create(GuildBO bo)
         {
-            throw new NotImplementedException();
+            using (var uow = _facade.UnitOfWork)
+            {
+                var entity = uow.GuildRepository.Create(_guildConverter.Convert(bo));
+                return _guildConverter.Convert(entity);
+            }
         }
 
         public List<GuildBO> GetAll()
