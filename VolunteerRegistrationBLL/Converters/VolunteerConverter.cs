@@ -12,7 +12,9 @@ namespace VolunteerRegistrationBLL.Converters
             return new Volunteer
             {
                 Id = businessObject.Id,
-                Name = businessObject.Name
+                Name = businessObject.Name,
+                Email = businessObject.Email,
+                Phone = businessObject.Phone
             };
         }
 
@@ -23,7 +25,9 @@ namespace VolunteerRegistrationBLL.Converters
             return new VolunteerBO
             {
                 Id = entity.Id,
-                Name = entity.Name
+                Name = entity.Name,
+                Email = entity.Email,
+                Phone = entity.Phone
             };
         }
     }

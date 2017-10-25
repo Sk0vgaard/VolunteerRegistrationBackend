@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using VolunteerRegistrationDAL.Context;
 using VolunteerRegistrationDAL.Entities;
@@ -16,27 +17,31 @@ namespace VolunteerRegistrationDAL.Repositories
 
         public Volunteer Create(Volunteer ent)
         {
-            return _context.volunteers.Add(ent).Entity;
+            return _context.Volunteers.Add(ent).Entity;
         }
 
         public IEnumerable<Volunteer> GetAll()
         {
-            return _context.volunteers.ToList();
+            return _context.Volunteers.ToList();
         }
 
         public IEnumerable<Volunteer> GetAll(List<int> ids)
         {
-            throw new System.NotImplementedException();
+            return _context.Volunteers.Where(v => ids.Contains(v.Id)).ToList();
         }
 
-        public Volunteer Get(int Id)
+        public Volunteer Get(int id)
         {
-            throw new System.NotImplementedException();
+            return _context.Volunteers.FirstOrDefault(v => v.Id == id);
         }
 
-        public Volunteer Delete(int Id)
+        public Volunteer Delete(int id)
         {
-            throw new System.NotImplementedException();
+            var volunteerToDelete = _context.Volunteers.FirstOrDefault(v => v.Id == id);
+            if (volunteerToDelete == null) return null;
+            _context.Volunteers.Remove(volunteerToDelete);
+
+            return volunteerToDelete;
         }
     }
 }

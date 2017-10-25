@@ -1,8 +1,7 @@
 ﻿namespace VolunteerRegistrationDAL.Entities
 {
-    public class Volunteer : IEntity
+    public class Volunteer : Person
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public string Phone { get; set; }
     }
 }

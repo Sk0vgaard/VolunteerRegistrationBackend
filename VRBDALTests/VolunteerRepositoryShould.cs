@@ -1,6 +1,6 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Moq;
+using System.Collections.Generic;
+using System.Linq;
 using VolunteerRegistrationDAL.Context;
 using VolunteerRegistrationDAL.Entities;
 using VolunteerRegistrationDAL.Repositories;
@@ -10,18 +10,26 @@ namespace VRBDALTests
 {
     public class VolunteerRepositoryShould : IRepositoryTest
     {
-        private readonly VolunteerRegistrationContext _context;
-        private readonly VolunteerRepository _repository;
-
         public VolunteerRepositoryShould()
         {
             _context = TestContext.Context;
             _repository = new VolunteerRepository(_context);
         }
 
+        private readonly VolunteerRegistrationContext _context;
+        private readonly VolunteerRepository _repository;
+
         private Volunteer CreateMockVolunteer()
         {
             var mock = new Volunteer {Id = 1, Name = "Test"};
+            var createdEntity = _repository.Create(mock);
+            _context.SaveChanges();
+            return createdEntity;
+        }
+
+        private Volunteer CreateSecondMockVolunteer()
+        {
+            var mock = new Volunteer{Id = 2, Name = "Mock"};
             var createdEntity = _repository.Create(mock);
             _context.SaveChanges();
             return createdEntity;
@@ -36,6 +44,21 @@ namespace VRBDALTests
         }
 
         [Fact]
+        public void DeleteByExistingId()
+        {
+            var createdEntity = CreateMockVolunteer();
+
+            var entityInList = _repository.GetAll().FirstOrDefault(v => v == createdEntity);
+            Assert.NotNull(entityInList);
+
+            var deletedEntity = _repository.Delete(createdEntity.Id);
+            _context.SaveChanges();
+
+            entityInList = _repository.GetAll().FirstOrDefault(v => v == deletedEntity);
+            Assert.Null(entityInList);
+        }
+
+        [Fact]
         public void GetAll()
         {
             CreateMockVolunteer();
@@ -44,6 +67,17 @@ namespace VRBDALTests
             Assert.NotNull(entities);
             Assert.NotEmpty(entities);
         }
+
+        [Fact]
+        public void GetAllByExistingIds()
+        {
+            var createdEntity = CreateMockVolunteer();
+            CreateSecondMockVolunteer();
+
+            var foundEntity = _repository.Get(createdEntity.Id);
+            Assert.NotNull(foundEntity);
+        }
+
         [Fact]
         public void GetOneByExistingId()
         {
@@ -51,40 +85,35 @@ namespace VRBDALTests
             var entity = _repository.Get(1);
             Assert.NotNull(entity);
         }
-        [Fact]
-        public void NotGetOneByNonExistingId()
-        {
-            throw new System.NotImplementedException();
-        }
-        [Fact]
-        public void GetAllByExistingIds()
-        {
-            throw new System.NotImplementedException();
-        }
-        [Fact]
-        public void NotGetAllByNonExistingIds()
-        {
-            throw new System.NotImplementedException();
-        }
-        [Fact]
-        public void DeleteByExistingId()
-        {
-            throw new System.NotImplementedException();
-        }
+
         [Fact]
         public void NotDeleteByNonExistingId()
         {
-            throw new System.NotImplementedException();
+            var entityWithFalseId = _repository.Delete(3);
+
+            Assert.Null(entityWithFalseId);
         }
+
         [Fact]
-        public void UpdateByExistingId()
+        public void NotGetAllByNonExistingIds()
         {
-            throw new System.NotImplementedException();
+            CreateMockVolunteer();
+            CreateSecondMockVolunteer();
+
+            var entitiesWithFalseIds = _repository.GetAll(new List<int>{3,4});
+
+            Assert.Empty(entitiesWithFalseIds);
         }
+
         [Fact]
-        public void NotUpdateByNonExistingId()
+        public void NotGetOneByNonExistingId()
         {
-            throw new System.NotImplementedException();
+            CreateMockVolunteer();
+            CreateSecondMockVolunteer();
+
+            var entity = _repository.Get(3);
+
+            Assert.Null(entity);
         }
     }
 }
