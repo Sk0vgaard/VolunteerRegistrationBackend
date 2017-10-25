@@ -39,7 +39,9 @@ namespace VolunteerRegistrationDAL.Repositories
 
         public Guild Delete(int Id)
         {
-            throw new NotImplementedException();
+            var guild = _context.guilds.FirstOrDefault(g => g.Id == Id);
+            _context.guilds.Remove(guild);
+            return guild;
         }
     }
 }

@@ -75,12 +75,22 @@ namespace VRBDALTests
         [Fact]
         public void NotGetAllByNonExistingIds()
         {
-            throw new System.NotImplementedException();
+            var firstGuild = CreateMockGuild();
+            var secondGuild = CreateSecondMockGuild();
+            var idList = new List<int>() {3, 4};
+            var notFound = _repository.GetAll(idList);
+            Assert.Empty(notFound);
         }
         [Fact]
         public void DeleteByExistingId()
         {
-            throw new System.NotImplementedException();
+            var newGuild = CreateMockGuild();
+            var guild = _repository.GetAll().FirstOrDefault(g => g.Id == newGuild.Id);
+            Assert.NotNull(guild);
+            _repository.Delete(guild.Id);
+            _context.SaveChanges();
+            var getAll = _repository.GetAll();
+            Assert.Empty(getAll);
         }
         [Fact]
         public void NotDeleteByNonExistingId()
