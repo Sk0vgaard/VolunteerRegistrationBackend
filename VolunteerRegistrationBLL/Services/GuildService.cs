@@ -19,27 +19,28 @@ namespace VolunteerRegistrationBLL.Services
             _facade = facade;
             _guildConverter = new GuildConverter();
         }
-        public Guild Create(Guild bo)
+
+        public GuildBO Create(GuildBO bo)
         {
             throw new NotImplementedException();
         }
 
-        public List<Guild> GetAll()
+        public List<GuildBO> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public List<Guild> GetAll(List<int> ids)
+        public List<GuildBO> GetAll(List<int> ids)
         {
             throw new NotImplementedException();
         }
 
-        public Guild Get(int id)
+        public GuildBO Get(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Guild Update(Guild bo)
+        public GuildBO Update(GuildBO bo)
         {
             throw new NotImplementedException();
         }
