@@ -95,17 +95,8 @@ namespace VRBDALTests
         [Fact]
         public void NotDeleteByNonExistingId()
         {
-            throw new System.NotImplementedException();
-        }
-        [Fact]
-        public void UpdateByExistingId()
-        {
-            throw new System.NotImplementedException();
-        }
-        [Fact]
-        public void NotUpdateByNonExistingId()
-        {
-            throw new System.NotImplementedException();
+            var guild = _repository.Delete(3);
+            Assert.Null(guild);
         }
     }
 }

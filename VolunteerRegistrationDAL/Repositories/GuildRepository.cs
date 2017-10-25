@@ -18,29 +18,33 @@ namespace VolunteerRegistrationDAL.Repositories
 
         public Guild Create(Guild ent)
         {
-            return _context.guilds.Add(ent).Entity;
+            return _context.Guilds.Add(ent).Entity;
         }
 
         public IEnumerable<Guild> GetAll()
         {
-            return _context.guilds.ToList();
+            return _context.Guilds.ToList();
         }
 
         public IEnumerable<Guild> GetAll(List<int> ids)
         {
-            return _context.guilds.Where(g => ids.Contains(g.Id)).ToList();
+            return _context.Guilds.Where(g => ids.Contains(g.Id)).ToList();
 
         }
 
         public Guild Get(int Id)
         {
-            return _context.guilds.FirstOrDefault(g => g.Id == Id);
+            return _context.Guilds.FirstOrDefault(g => g.Id == Id);
         }
 
         public Guild Delete(int Id)
         {
-            var guild = _context.guilds.FirstOrDefault(g => g.Id == Id);
-            _context.guilds.Remove(guild);
+            var guild = _context.Guilds.FirstOrDefault(g => g.Id == Id);
+            if (guild == null)
+            {
+                return null;
+            }
+            _context.Guilds.Remove(guild);
             return guild;
         }
     }
