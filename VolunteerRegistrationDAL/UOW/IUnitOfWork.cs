@@ -6,6 +6,7 @@ namespace VolunteerRegistrationDAL.UOW
     public interface IUnitOfWork : IDisposable
     {
         IVolunteerRepository VolunteerRepository { get;}
+        IGuildRepository GuildRepository { get;} 
 
         int Complete();
     }

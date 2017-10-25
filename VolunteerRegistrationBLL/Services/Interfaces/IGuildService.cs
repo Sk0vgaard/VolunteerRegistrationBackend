@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using VolunteerRegistrationDAL.Entities;
 
-namespace VolunteerRegistrationDAL.Repositories
+namespace VolunteerRegistrationBLL.Services.Interfaces
 {
-    public interface IGuildRepository : IRepository<Guild>
+    interface IGuildService : IService<Guild>
     {
     }
 }
