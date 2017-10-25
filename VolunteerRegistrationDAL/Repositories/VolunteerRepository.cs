@@ -8,11 +8,26 @@ namespace VolunteerRegistrationDAL.Repositories
 {
     internal class VolunteerRepository : IVolunteerRepository
     {
-        private VolunteerRegistrationContext _context;
+        private readonly VolunteerRegistrationContext _context;
 
         public VolunteerRepository(VolunteerRegistrationContext context)
         {
             _context = context;
+
+            //TODO ALH: Remove when deploying on Azure!
+            _context.Volunteers.Add(new Volunteer
+            {
+                Name = "Adam Flotfyr",
+                Email = "a@ff.dk",
+                Phone = "+4512345678"
+            });
+            _context.Volunteers.Add(new Volunteer
+            {
+                Name = "Rasmus Flotfyr",
+                Email = "r@ff.dk",
+                Phone = "+4512345678"
+            });
+            _context.SaveChanges();
         }
 
         public Volunteer Create(Volunteer ent)
