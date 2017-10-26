@@ -111,7 +111,7 @@ namespace VRBDALTests
             CreateMockVolunteer();
             CreateSecondMockVolunteer();
 
-            var entity = _repository.Get(3);
+            var entity = _repository.Get(0);
 
             Assert.Null(entity);
         }
