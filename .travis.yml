@@ -7,7 +7,7 @@ install:
 script:
 - dotnet build
 - dotnet test VRBDALTests/VRBDALTests.csproj
-- dotnet test VRBBLLLTests/VRBBLLTests.csproj
+- dotnet test VRBBLLTests/VRBBLLTests.csproj
 branches:
   only:
   - master
