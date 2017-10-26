@@ -1,0 +1,23 @@
+language: csharp
+mono: none
+dotnet: 2.0.0
+dist: trusty
+install:
+- dotnet restore
+script:
+- dotnet build
+- dotnet test VRBDALTests/VRBDALTests.csproj
+branches:
+  only:
+  - master
+  - development
+notifications:
+  email: false
+  slack:
+    rooms:
+      - cs2016a:MrE8tgSmsfcVCMVTa1JgT78G
+    on_success: change
+    on_failure: always
+    template:
+      - "%{author} %{result} build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) in %{repository}@%{branch}"
+      - "Commit message: %{commit_message}"
