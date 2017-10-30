@@ -49,42 +49,66 @@ namespace VRBBLLTests
         [Fact]
         public override void NotGetOneByNonExistingId()
         {
-            throw new NotImplementedException();
+            _mockGuildRepo.Setup(r => r.Get(It.IsAny<int>())).Returns(() => null);
+            var nonExistingId = 0;
+            var entity = _service.Get(nonExistingId);
+            Assert.Null(entity);
         }
         [Fact]
         public override void NotConvertNullEntity()
         {
-            throw new NotImplementedException();
+            var entity = _service.Create(null);
+            Assert.Null(entity);
         }
         [Fact]
         public override void GetAllByExistingIds()
         {
-            throw new NotImplementedException();
+            var guild = new GuildBO { Id = 1 };
+            _mockGuildRepo.Setup(r => r.GetAll(It.IsAny<List<int>>())).Returns(new List<Guild> { new Guild() {Id = guild.Id} });
+            var entities = _service.GetAll(new List<int>() {guild.Id});
+            Assert.NotEmpty(entities);
         }
         [Fact]
         public override void NotGetAllByNonExistingIds()
         {
-            throw new NotImplementedException();
+            _mockGuildRepo.Setup(r => r.GetAll(It.IsAny<List<int>>())).Returns(new List<Guild>{});
+            var entities = _service.GetAll(new List<int>());
+            Assert.Empty(entities);
         }
         [Fact]
         public override void DeleteByExistingId()
         {
-            throw new NotImplementedException();
+            var entity = new GuildBO { Id = 1 };
+            _mockGuildRepo.Setup(r => r.Delete(entity.Id)).Returns(new Guild() {Id = entity.Id});
+            var deleted = _service.Delete(entity.Id);
+            Assert.True(deleted);
         }
         [Fact]
         public override void NotDeleteByNonExistingId()
         {
-            throw new NotImplementedException();
+            _mockGuildRepo.Setup(r => r.Delete(It.IsAny<int>())).Returns(() => null);
+            var nonExistingId = 0;
+            var deleted = _service.Delete(nonExistingId);
+            Assert.False(deleted);
         }
         [Fact]
         public override void UpdateByExistingId()
         {
-            throw new NotImplementedException();
+            var guild = new Guild() {Id = 1, Name = "One"};
+            _mockGuildRepo.Setup(r => r.Get(guild.Id)).Returns(new Guild() {Id = guild.Id, Name = guild.Name});
+            var guildToUpdate = _service.Get(guild.Id);
+            var newName = "D4FF";
+            guildToUpdate.Name = newName;
+            var updatedGuild = _service.Update(guildToUpdate);
+            Assert.Contains(updatedGuild.Name, newName);
         }
         [Fact]
         public override void NotUpdateByNonExistingId()
         {
-            throw new NotImplementedException();
+            _mockGuildRepo.Setup(r => r.Get(It.IsAny<int>())).Returns(() => null);
+            var nonExistingGuild = new GuildBO() {Id = 0};
+            var entity = _service.Update(nonExistingGuild);
+            Assert.Null(entity);
         }
     }
 }

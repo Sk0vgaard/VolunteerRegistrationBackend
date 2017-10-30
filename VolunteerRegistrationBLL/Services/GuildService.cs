@@ -40,7 +40,10 @@ namespace VolunteerRegistrationBLL.Services
 
         public List<GuildBO> GetAll(List<int> ids)
         {
-            throw new NotImplementedException();
+            using (var uow = _facade.UnitOfWork)
+            {
+                return uow.GuildRepository.GetAll(ids).Select(_guildConverter.Convert).ToList();
+            }
         }
 
         public GuildBO Get(int id)
@@ -53,12 +56,26 @@ namespace VolunteerRegistrationBLL.Services
 
         public GuildBO Update(GuildBO bo)
         {
-            throw new NotImplementedException();
+            using (var uow = _facade.UnitOfWork)
+            {
+                var entityToUpdate = uow.GuildRepository.Get(bo.Id);
+                if (entityToUpdate == null) return null;
+                entityToUpdate.Id = bo.Id;
+                entityToUpdate.Name = bo.Name;
+                uow.Complete();
+                return bo;
+            }
         }
 
         public bool Delete(int id)
         {
-            throw new NotImplementedException();
+            using (var uow = _facade.UnitOfWork)
+            {
+                var entityToDelete = uow.GuildRepository.Delete(id);
+                uow.Complete();
+                if (entityToDelete == null) return false;
+                return true;
+            }
         }
     }
 }

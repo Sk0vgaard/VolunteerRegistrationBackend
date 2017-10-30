@@ -10,6 +10,7 @@ namespace VolunteerRegistrationBLL.Converters
     {
         public Guild Convert(GuildBO businessObject)
         {
+            if (businessObject == null) return null;
             return new Guild
             {
                 Id = businessObject.Id,
@@ -19,6 +20,7 @@ namespace VolunteerRegistrationBLL.Converters
 
         public GuildBO Convert(Guild entity)
         {
+            if (entity == null) return null;
             return new GuildBO
             {
                 Id = entity.Id,
