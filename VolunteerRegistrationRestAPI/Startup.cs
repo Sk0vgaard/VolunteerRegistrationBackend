@@ -53,6 +53,7 @@ namespace VolunteerRegistrationRestAPI
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             // Add services!
             services.AddScoped<IVolunteerService, VolunteerService>();
+            services.AddScoped<IGuildService, GuildService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
