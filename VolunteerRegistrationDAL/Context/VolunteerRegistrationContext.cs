@@ -7,6 +7,7 @@ namespace VolunteerRegistrationDAL.Context
     {
         public VolunteerRegistrationContext(DbContextOptions<VolunteerRegistrationContext> options) : base(options)
         {
+
             Database.EnsureCreated();
         }
 
@@ -18,5 +19,6 @@ namespace VolunteerRegistrationDAL.Context
 
         public DbSet<Guild> Guilds { get; set; }    
         public DbSet<Volunteer> Volunteers { get; set; }
+        
     }
 }
