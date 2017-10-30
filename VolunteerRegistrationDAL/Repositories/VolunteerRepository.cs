@@ -15,18 +15,18 @@ namespace VolunteerRegistrationDAL.Repositories
             _context = context;
 
             //TODO ALH: Remove when deploying on Azure!
-            _context.Volunteers.Add(new Volunteer
-            {
-                Name = "Adam Flotfyr",
-                Email = "a@ff.dk",
-                Phone = "+4512345678"
-            });
-            _context.Volunteers.Add(new Volunteer
-            {
-                Name = "Rasmus Flotfyr",
-                Email = "r@ff.dk",
-                Phone = "+4512345678"
-            });
+            //_context.Volunteers.Add(new Volunteer
+            //{
+            //    Name = "Adam Flotfyr",
+            //    Email = "a@ff.dk",
+            //    Phone = "+4512345678"
+            //});
+            //_context.Volunteers.Add(new Volunteer
+            //{
+            //    Name = "Rasmus Flotfyr",
+            //    Email = "r@ff.dk",
+            //    Phone = "+4512345678"
+            //});
             _context.SaveChanges();
         }
 
