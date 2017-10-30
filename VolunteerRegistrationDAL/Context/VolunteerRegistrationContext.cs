@@ -17,6 +17,7 @@ namespace VolunteerRegistrationDAL.Context
             base.OnModelCreating(modelBuilder);
         }
 
+        public DbSet<Guild> Guilds { get; set; }    
         public DbSet<Volunteer> Volunteers { get; set; }
         
     }

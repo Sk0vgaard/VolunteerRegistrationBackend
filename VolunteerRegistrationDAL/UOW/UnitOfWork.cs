@@ -7,6 +7,7 @@ namespace VolunteerRegistrationDAL.UOW
     public class UnitOfWork : IUnitOfWork
     {
         private readonly VolunteerRegistrationContext _context;
+        public IGuildRepository GuildRepository { get; }
 
         public IVolunteerRepository VolunteerRepository { get; }
 
@@ -15,6 +16,7 @@ namespace VolunteerRegistrationDAL.UOW
             _context = context;
 
             VolunteerRepository = new VolunteerRepository(_context);
+            GuildRepository = new GuildRepository(_context);
         }
 
         public int Complete()
