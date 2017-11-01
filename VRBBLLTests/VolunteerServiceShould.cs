@@ -37,10 +37,10 @@ namespace VRBBLLTests
         [Fact]
         public override void DeleteByExistingId()
         {
-            var entity = new VolunteerBO{Id = 1};
-            _mockVolunteerRepo.Setup(r => r.Delete(entity.Id)).Returns(new Volunteer{Id = 1});
+            var entity = new VolunteerBO {Id = 1};
+            _mockVolunteerRepo.Setup(r => r.Delete(entity.Id)).Returns(new Volunteer {Id = 1});
             _mockVolunteerRepo.Setup(r => r.Get(It.IsAny<int>())).Returns(new Volunteer());
-            
+
             var deleted = _service.Delete(entity.Id);
 
             Assert.True(deleted);
@@ -57,25 +57,25 @@ namespace VRBBLLTests
         [Fact]
         public override void GetAllByExistingIds()
         {
-            var volunteerOne = new VolunteerBO { Id = 1, Name = "One"};
-            var volunteerTwo = new VolunteerBO { Id = 2, Name = "Two"};
+            var volunteerOne = new VolunteerBO {Id = 1, Name = "One"};
+            var volunteerTwo = new VolunteerBO {Id = 2, Name = "Two"};
             _mockVolunteerRepo.Setup(r => r.Create(It.IsAny<Volunteer>())).Returns(new Volunteer());
 
             _service.Create(volunteerOne);
             _service.Create(volunteerTwo);
 
-            var existingEntityIds = new List<int>{volunteerOne.Id, volunteerTwo.Id};
+            var existingEntityIds = new List<int> {volunteerOne.Id, volunteerTwo.Id};
             _mockVolunteerRepo.Setup(r => r.GetAll(existingEntityIds)).Returns(new List<Volunteer>
             {
                 new Volunteer
                 {
-                    Id = 1, Name = "One"
-                    
+                    Id = 1,
+                    Name = "One"
                 },
                 new Volunteer
                 {
-                    Id = 2, Name = "Two"
-                    
+                    Id = 2,
+                    Name = "Two"
                 }
             });
 
@@ -88,12 +88,42 @@ namespace VRBBLLTests
         [Fact]
         public override void GetOneByExistingId()
         {
-            var volunteer = new VolunteerBO{Id = 1};
+            var volunteer = new VolunteerBO {Id = 1};
             _mockVolunteerRepo.Setup(r => r.Get(volunteer.Id)).Returns(new Volunteer {Id = 1});
 
             var entity = _service.Get(volunteer.Id);
 
             Assert.NotNull(entity);
+        }
+
+        [Fact]
+        public void GetOneByExistingIdWithGuilds()
+        {
+            var volunteer = new VolunteerBO { Id = 1 };
+            _mockVolunteerRepo.Setup(r => r.Get(volunteer.Id)).Returns(new Volunteer
+            {
+                Id = 1,
+                Guilds = new List<GuildWork>
+                {
+                    new GuildWork
+                    {
+                        GuildId = 1,
+                        VolunteerId = 1
+                    }
+                }
+            });
+            var mockGuildRepo = new Mock<IGuildRepository>();
+            MockUOW.SetupGet(uow => uow.GuildRepository).Returns(mockGuildRepo.Object);
+            mockGuildRepo.Setup(r => r.GetGuildsWithIds(It.IsAny<List<int>>())).Returns(new List<Guild>
+            {
+                new Guild{Id = 1}
+            });
+
+
+            var entity = _service.Get(volunteer.Id);
+
+            Assert.NotNull(entity);
+            Assert.NotEmpty(entity.Guilds);
         }
 
         [Fact]
@@ -148,7 +178,7 @@ namespace VRBBLLTests
         [Fact]
         public override void UpdateByExistingId()
         {
-            var entity = new Volunteer{Id = 1, Name = "One"};
+            var entity = new Volunteer {Id = 1, Name = "One"};
             _mockVolunteerRepo.Setup(r => r.Get(entity.Id)).Returns(new Volunteer
             {
                 Id = 1,
@@ -165,31 +195,6 @@ namespace VRBBLLTests
             Assert.Contains(newName, updatedEntity.Name);
         }
 
-        [Fact]
-        public void GetVolunteersInGuild()
-        {
-            _mockVolunteerRepo.Setup(r => r.GetVolunteersInGuild(1)).Returns(new List<Volunteer>
-            {
-                new Volunteer
-                {
-                    Id = 1,
-                    Guilds = new List<GuildWork>{new GuildWork { GuildId = 1, VolunteerId = 1} }
-                }
-            });
-
-            var volunteersInGuild = _service.GetVolunteersInGuild(1);
-
-            Assert.NotEmpty(volunteersInGuild);
-        }
-
-        [Fact]
-        public void GetEmptyListOfVolunteersInGuildWithNoVolunteers()
-        {
-            _mockVolunteerRepo.Setup(r => r.GetVolunteersInGuild(1)).Returns(new List<Volunteer>());
-
-            var volunteersInGuild = _service.GetVolunteersInGuild(1);
-
-            Assert.Empty(volunteersInGuild);
-        }
+        
     }
 }

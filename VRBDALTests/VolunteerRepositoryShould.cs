@@ -117,35 +117,25 @@ namespace VRBDALTests
         }
 
         [Fact]
-        public void GetVolunteersInGuild()
+        public void GetVolunteersWithExistingIds()
         {
-            _context.Volunteers.Add(new Volunteer
-            {
-                Id = 1,
-                Guilds = new List<GuildWork> {new GuildWork
-                {
-                    VolunteerId = 1, GuildId = 1
-                }}
-            });
-            _context.SaveChanges();
+            var listOfExistingIds = new List<int>{1, 2};
+            CreateMockVolunteer();
+            CreateSecondMockVolunteer();
 
-            var volunteerInGuild = _repository.GetVolunteersInGuild(1);
+            var volunteers = _repository.GetVolunteersWithIds(listOfExistingIds);
 
-            Assert.True(volunteerInGuild.Count == 1);
+            Assert.NotEmpty(volunteers);
+            Assert.True(volunteers.Count == 2);
         }
-
         [Fact]
-        public void GetEmptyListOfVolunteersInGuildWithNoWork()
+        public void GetEmptyListOfVolunteersWithNonExistingIds()
         {
-            _context.Volunteers.Add(new Volunteer
-            {
-                Id = 1
-            });
-            _context.SaveChanges();
+            var listOfExistingIds = new List<int>{0};
 
-            var volunteersInGuild = _repository.GetVolunteersInGuild(1);
+            var volunteers = _repository.GetVolunteersWithIds(listOfExistingIds);
 
-            Assert.Empty(volunteersInGuild);
+            Assert.Empty(volunteers);
         }
     }
 }

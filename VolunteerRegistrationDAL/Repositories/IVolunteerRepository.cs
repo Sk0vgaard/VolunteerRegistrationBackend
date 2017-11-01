@@ -8,10 +8,10 @@ namespace VolunteerRegistrationDAL.Repositories
     public interface IVolunteerRepository : IRepository<Volunteer>
     {
         /// <summary>
-        /// Get volunteeers in parsed guild
+        /// Get volunteeers with ids
         /// </summary>
-        /// <param name="guildId"></param>
-        /// <returns>List of volunteers in guild</returns>
-        List<Volunteer> GetVolunteersInGuild(int guildId);
+        /// <param name="ids"></param>
+        /// <returns>List of volunteers</returns>
+        List<Volunteer> GetVolunteersWithIds(List<int> ids);
     }
 }

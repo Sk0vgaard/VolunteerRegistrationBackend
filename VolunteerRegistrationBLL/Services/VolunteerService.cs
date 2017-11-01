@@ -12,11 +12,13 @@ namespace VolunteerRegistrationBLL.Services
     {
         private readonly IDALFacade _facade;
         private readonly VolunteerConverter _volunteerConverter;
+        private readonly GuildConverter _guildConverter;
 
         public VolunteerService(IDALFacade dalFacade)
         {
             _facade = dalFacade;
             _volunteerConverter = new VolunteerConverter();
+            _guildConverter = new GuildConverter();
         }
 
         public VolunteerBO Create(VolunteerBO bo)
@@ -50,7 +52,15 @@ namespace VolunteerRegistrationBLL.Services
         {
             using (var unitOfWork = _facade.UnitOfWork)
             {
-                return _volunteerConverter.Convert(unitOfWork.VolunteerRepository.Get(id));
+                var volunteerFromDB = unitOfWork.VolunteerRepository.Get(id);
+                if (volunteerFromDB == null) return null;
+                var convertedVolunteer = _volunteerConverter.Convert(volunteerFromDB);
+
+                if (convertedVolunteer.GuildIds == null) return convertedVolunteer;
+                convertedVolunteer.Guilds = unitOfWork.GuildRepository.GetGuildsWithIds(convertedVolunteer.GuildIds)
+                    ?.Select(g => _guildConverter.Convert(g))
+                    .ToList();
+                return convertedVolunteer;
             }
         }
 
@@ -79,16 +89,6 @@ namespace VolunteerRegistrationBLL.Services
                 unitOfWork.Complete();
                 if (entityToDelete == null) return false;
                 return true;
-            }
-        }
-
-        public List<VolunteerBO> GetVolunteersInGuild(int guildId)
-        {
-            using (var unitOfWork = _facade.UnitOfWork)
-            {
-                return unitOfWork.VolunteerRepository.GetVolunteersInGuild(guildId)
-                    .Select(_volunteerConverter.Convert)
-                    .ToList();
             }
         }
     }
