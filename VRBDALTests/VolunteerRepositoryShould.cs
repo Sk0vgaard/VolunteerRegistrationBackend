@@ -133,5 +133,19 @@ namespace VRBDALTests
 
             Assert.True(volunteerInGuild.Count == 1);
         }
+
+        [Fact]
+        public void GetEmptyListOfVolunteersInGuildWithNoWork()
+        {
+            _context.Volunteers.Add(new Volunteer
+            {
+                Id = 1
+            });
+            _context.SaveChanges();
+
+            var volunteersInGuild = _repository.GetVolunteersInGuild(1);
+
+            Assert.Empty(volunteersInGuild);
+        }
     }
 }
