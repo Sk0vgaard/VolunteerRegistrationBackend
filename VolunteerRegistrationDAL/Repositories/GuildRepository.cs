@@ -47,5 +47,10 @@ namespace VolunteerRegistrationDAL.Repositories
             _context.Guilds.Remove(guild);
             return guild;
         }
+
+        public List<Guild> GetGuildsWithVolunteer(int volunteerId)
+        {
+            return _context.Guilds.Where(g => g.Volunteers.Any(v => v.VolunteerId == volunteerId)).ToList();
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using VolunteerRegistrationDAL.Context;
 using VolunteerRegistrationDAL.Entities;
 
@@ -57,6 +58,13 @@ namespace VolunteerRegistrationDAL.Repositories
             _context.Volunteers.Remove(volunteerToDelete);
 
             return volunteerToDelete;
+        }
+
+        public List<Volunteer> GetVolunteersInGuild(int guildId)
+        {
+            return _context.Volunteers.Where(v => v.Guilds
+            .Any(gw => gw.GuildId == guildId))
+            .ToList();
         }
     }
 }
