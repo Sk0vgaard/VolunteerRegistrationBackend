@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace VolunteerRegistrationBLL.BusinessObjects
 {
@@ -6,6 +7,9 @@ namespace VolunteerRegistrationBLL.BusinessObjects
     {
         [Required]
         public string Phone { get; set; }
+
+        public List<int> GuildIds { get; set; }
+        public List<GuildBO> Guilds { get; set; }
 
     }
 }
