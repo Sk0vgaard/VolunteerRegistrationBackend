@@ -6,7 +6,7 @@ using VolunteerRegistrationDAL.Entities;
 
 namespace VolunteerRegistrationBLL.Services.Interfaces
 {
-    interface IGuildService : IService<GuildBO>
+    public interface IGuildService : IService<GuildBO>
     {
     }
 }

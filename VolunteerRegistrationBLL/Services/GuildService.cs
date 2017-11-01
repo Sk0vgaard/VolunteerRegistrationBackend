@@ -26,6 +26,7 @@ namespace VolunteerRegistrationBLL.Services
             using (var uow = _facade.UnitOfWork)
             {
                 var entity = uow.GuildRepository.Create(_guildConverter.Convert(bo));
+                uow.Complete();
                 return _guildConverter.Convert(entity);
             }
         }
