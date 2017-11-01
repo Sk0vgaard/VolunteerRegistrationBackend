@@ -8,5 +8,8 @@ namespace VolunteerRegistrationBLL.BusinessObjects
     {
         public int Id { get; set; }
         public string Name { get; set; }
+
+        public List<int> VolunteerIds { get; set; }
+        public List<VolunteerBO> Volunteers { get; set; }
     }
 }
