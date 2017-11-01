@@ -1,10 +1,12 @@
 ﻿using System;
+using VolunteerRegistrationDAL.Repositories;
 
-namespace VolunteerRegistrationDAL
+namespace VolunteerRegistrationDAL.UOW
 {
     public interface IUnitOfWork : IDisposable
     {
-        //ICustomerRepository CustomerRepository { get; }
+        IVolunteerRepository VolunteerRepository { get;}
+        IGuildRepository GuildRepository { get;} 
 
         int Complete();
     }

@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="BusinessObjects\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\VolunteerRegistrationDAL\VolunteerRegistrationDAL.csproj" />
   </ItemGroup>
 </Project>

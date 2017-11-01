@@ -1,4 +1,6 @@
-﻿namespace VolunteerRegistrationDAL
+﻿using VolunteerRegistrationDAL.UOW;
+
+namespace VolunteerRegistrationDAL.Facade
 {
     public interface IDALFacade
     {

@@ -1,21 +1,22 @@
-﻿using System;
-using Microsoft.Extensions.Configuration;
-using VolunteerRegistrationDAL;
+﻿using System.Runtime.CompilerServices;
+using VolunteerRegistrationBLL.Services;
+using VolunteerRegistrationBLL.Services.Interfaces;
 using VolunteerRegistrationDAL.Facade;
+
+[assembly: InternalsVisibleTo("VRBBLLTests")]
+[assembly: InternalsVisibleTo("VolunteerRegistrationRestAPI")]
 
 namespace VolunteerRegistrationBLL.Facade
 {
     public class BLLFacade : IBLLFacade
     {
-        private IDALFacade facade;
+        private readonly IDALFacade _dalFacade;
 
-        public BLLFacade(IConfiguration conf)
+        public BLLFacade(IDALFacade dalFacade)
         {
-            facade = new DALFacade(new DbOptions
-            {
-                ConnectionString = conf.GetConnectionString("DefaultConnection"),
-                Environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
-            });
+            _dalFacade = dalFacade;
         }
+
+        public IVolunteerService VolunteerService => new VolunteerService(_dalFacade);
     }
 }
