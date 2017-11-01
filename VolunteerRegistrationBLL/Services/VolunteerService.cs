@@ -81,5 +81,15 @@ namespace VolunteerRegistrationBLL.Services
                 return true;
             }
         }
+
+        public List<VolunteerBO> GetVolunteersInGuild(int guildId)
+        {
+            using (var unitOfWork = _facade.UnitOfWork)
+            {
+                return unitOfWork.VolunteerRepository.GetVolunteersInGuild(guildId)
+                    .Select(_volunteerConverter.Convert)
+                    .ToList();
+            }
+        }
     }
 }

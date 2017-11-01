@@ -164,5 +164,32 @@ namespace VRBBLLTests
 
             Assert.Contains(newName, updatedEntity.Name);
         }
+
+        [Fact]
+        public void GetVolunteersInGuild()
+        {
+            _mockVolunteerRepo.Setup(r => r.GetVolunteersInGuild(1)).Returns(new List<Volunteer>
+            {
+                new Volunteer
+                {
+                    Id = 1,
+                    Guilds = new List<GuildWork>{new GuildWork { GuildId = 1, VolunteerId = 1} }
+                }
+            });
+
+            var volunteersInGuild = _service.GetVolunteersInGuild(1);
+
+            Assert.NotEmpty(volunteersInGuild);
+        }
+
+        [Fact]
+        public void GetEmptyListOfVolunteersInGuildWithNoVolunteers()
+        {
+            _mockVolunteerRepo.Setup(r => r.GetVolunteersInGuild(1)).Returns(new List<Volunteer>());
+
+            var volunteersInGuild = _service.GetVolunteersInGuild(1);
+
+            Assert.Empty(volunteersInGuild);
+        }
     }
 }
