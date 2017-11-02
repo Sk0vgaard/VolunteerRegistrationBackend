@@ -8,7 +8,7 @@ namespace VolunteerRegistrationDAL.Entities
         public Guild Guild { get; set; }
         public int VolunteerId { get; set; }
         public Volunteer Volunteer { get; set; }
-        public DateTime Start { get; set; }
+        public DateTime Start { get; set; } = DateTime.Now;
         public DateTime End { get; set; }
     }
 }
