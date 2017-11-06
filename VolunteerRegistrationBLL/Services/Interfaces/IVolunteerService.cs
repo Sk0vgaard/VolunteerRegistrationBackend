@@ -1,4 +1,5 @@
-﻿using VolunteerRegistrationBLL.BusinessObjects;
+﻿using System.Collections.Generic;
+using VolunteerRegistrationBLL.BusinessObjects;
 
 namespace VolunteerRegistrationBLL.Services.Interfaces
 {

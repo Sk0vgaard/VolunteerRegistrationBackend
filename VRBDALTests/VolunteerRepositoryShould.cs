@@ -29,7 +29,7 @@ namespace VRBDALTests
 
         private Volunteer CreateSecondMockVolunteer()
         {
-            var mock = new Volunteer{Id = 2, Name = "Mock"};
+            var mock = new Volunteer {Id = 2, Name = "Mock"};
             var createdEntity = _repository.Create(mock);
             _context.SaveChanges();
             return createdEntity;
@@ -100,7 +100,7 @@ namespace VRBDALTests
             CreateMockVolunteer();
             CreateSecondMockVolunteer();
 
-            var entitiesWithFalseIds = _repository.GetAll(new List<int>{3,4});
+            var entitiesWithFalseIds = _repository.GetAll(new List<int> {3, 4});
 
             Assert.Empty(entitiesWithFalseIds);
         }
@@ -114,6 +114,28 @@ namespace VRBDALTests
             var entity = _repository.Get(0);
 
             Assert.Null(entity);
+        }
+
+        [Fact]
+        public void GetVolunteersWithExistingIds()
+        {
+            var listOfExistingIds = new List<int>{1, 2};
+            CreateMockVolunteer();
+            CreateSecondMockVolunteer();
+
+            var volunteers = _repository.GetVolunteersWithIds(listOfExistingIds);
+
+            Assert.NotEmpty(volunteers);
+            Assert.True(volunteers.Count == 2);
+        }
+        [Fact]
+        public void GetEmptyListOfVolunteersWithNonExistingIds()
+        {
+            var listOfExistingIds = new List<int>{0};
+
+            var volunteers = _repository.GetVolunteersWithIds(listOfExistingIds);
+
+            Assert.Empty(volunteers);
         }
     }
 }

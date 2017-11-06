@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 using VolunteerRegistrationDAL.Context;
 using VolunteerRegistrationDAL.Entities;
 
@@ -9,7 +10,7 @@ namespace VolunteerRegistrationDAL.Repositories
 {
     class GuildRepository : IGuildRepository
     {
-        private VolunteerRegistrationContext _context;
+        private readonly VolunteerRegistrationContext _context;
 
         public GuildRepository(VolunteerRegistrationContext context)
         {
@@ -23,7 +24,7 @@ namespace VolunteerRegistrationDAL.Repositories
 
         public IEnumerable<Guild> GetAll()
         {
-            return _context.Guilds.ToList();
+            return _context.Guilds.Include(g => g.Volunteers).ToList();
         }
 
         public IEnumerable<Guild> GetAll(List<int> ids)
@@ -32,9 +33,9 @@ namespace VolunteerRegistrationDAL.Repositories
 
         }
 
-        public Guild Get(int Id)
+        public Guild Get(int id)
         {
-            return _context.Guilds.FirstOrDefault(g => g.Id == Id);
+            return _context.Guilds.Include(g => g.Volunteers).FirstOrDefault(g => g.Id == id);
         }
 
         public Guild Delete(int Id)
@@ -46,6 +47,11 @@ namespace VolunteerRegistrationDAL.Repositories
             }
             _context.Guilds.Remove(guild);
             return guild;
+        }
+
+        public List<Guild> GetGuildsWithIds(List<int> ids)
+        {
+            return _context.Guilds.Where(g => ids.Contains(g.Id)).ToList();
         }
     }
 }

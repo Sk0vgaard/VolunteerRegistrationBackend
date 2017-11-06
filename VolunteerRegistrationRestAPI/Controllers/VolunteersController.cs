@@ -57,7 +57,7 @@ namespace VolunteerRegistrationRestAPI.Controllers
         {
             var deleted = _service.Delete(id);
             if (deleted == false) return NotFound();
-            return Ok();
+            return Ok(deleted);
         }
     }
 }

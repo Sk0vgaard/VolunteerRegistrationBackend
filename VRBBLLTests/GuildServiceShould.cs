@@ -46,6 +46,36 @@ namespace VRBBLLTests
             var entity = _service.Get(guild.Id);
             Assert.NotNull(entity);
         }
+
+        [Fact]
+        public void GetOneByExistingIdWithGuilds()
+        {
+            var volunteer = new VolunteerBO { Id = 1 };
+            _mockGuildRepo.Setup(r => r.Get(volunteer.Id)).Returns(new Guild()
+            {
+                Id = 1,
+                Volunteers = new List<GuildWork>
+                {
+                    new GuildWork
+                    {
+                        GuildId = 1,
+                        VolunteerId = 1
+                    }
+                }
+            });
+            var mockVolunteerRepo = new Mock<IVolunteerRepository>();
+            MockUOW.SetupGet(uow => uow.VolunteerRepository).Returns(mockVolunteerRepo.Object);
+            mockVolunteerRepo.Setup(r => r.GetVolunteersWithIds(It.IsAny<List<int>>())).Returns(new List<Volunteer>
+            {
+                new Volunteer(){Id = 1}
+            });
+
+
+            var entity = _service.Get(volunteer.Id);
+
+            Assert.NotNull(entity);
+            Assert.NotEmpty(entity.Volunteers);
+        }
         [Fact]
         public override void NotGetOneByNonExistingId()
         {

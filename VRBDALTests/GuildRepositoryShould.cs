@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using VolunteerRegistrationDAL.Context;
 using VolunteerRegistrationDAL.Entities;
@@ -25,9 +26,10 @@ namespace VRBDALTests
             _context.SaveChanges();
             return createdEntity;
         }
+
         private Guild CreateSecondMockGuild()
         {
-            var mock = new Guild { Id = 2, Name = "TEST2" };
+            var mock = new Guild {Id = 2, Name = "TEST2"};
             var createdEntity = _repository.Create(mock);
             _context.SaveChanges();
             return createdEntity;
@@ -39,6 +41,7 @@ namespace VRBDALTests
             var createdEntity = CreateMockGuild();
             Assert.NotNull(createdEntity);
         }
+
         [Fact]
         public void GetAll()
         {
@@ -47,6 +50,7 @@ namespace VRBDALTests
             Assert.NotNull(entities);
             Assert.NotEmpty(entities);
         }
+
         [Fact]
         public void GetOneByExistingId()
         {
@@ -54,14 +58,15 @@ namespace VRBDALTests
             var entity = _repository.Get(1);
             Assert.NotNull(entity);
         }
+
         [Fact]
         public void NotGetOneByNonExistingId()
         {
             CreateMockGuild();
             var entity = _repository.Get(2);
             Assert.Null(entity);
-            
         }
+
         [Fact]
         public void GetAllByExistingIds()
         {
@@ -72,6 +77,7 @@ namespace VRBDALTests
             Assert.Contains(firstGuild, foundEntities);
             Assert.DoesNotContain(secondGuild, foundEntities);
         }
+
         [Fact]
         public void NotGetAllByNonExistingIds()
         {
@@ -81,6 +87,7 @@ namespace VRBDALTests
             var notFound = _repository.GetAll(idList);
             Assert.Empty(notFound);
         }
+
         [Fact]
         public void DeleteByExistingId()
         {
@@ -92,11 +99,34 @@ namespace VRBDALTests
             var getAll = _repository.GetAll();
             Assert.Empty(getAll);
         }
+
         [Fact]
         public void NotDeleteByNonExistingId()
         {
             var guild = _repository.Delete(3);
             Assert.Null(guild);
+        }
+
+        [Fact]
+        public void GetVolunteersWithExistingIds()
+        {
+            var listOfExistingIds = new List<int> { 1, 2 };
+            CreateMockGuild();
+            CreateSecondMockGuild();
+
+            var guilds = _repository.GetGuildsWithIds(listOfExistingIds);
+
+            Assert.NotEmpty(guilds);
+            Assert.True(guilds.Count == 2);
+        }
+        [Fact]
+        public void GetEmptyListOfVolunteersWithNonExistingIds()
+        {
+            var listOfExistingIds = new List<int> { 0 };
+
+            var volunteers = _repository.GetGuildsWithIds(listOfExistingIds);
+
+            Assert.Empty(volunteers);
         }
     }
 }
