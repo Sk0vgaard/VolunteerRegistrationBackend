@@ -14,11 +14,13 @@ namespace VolunteerRegistrationBLL.Services
     {
         private readonly IDALFacade _facade;
         private readonly IConverter<Guild, GuildBO> _guildConverter;
+        private readonly VolunteerConverter _volunteerConverter;
 
         public GuildService(IDALFacade facade)
         {
             _facade = facade;
             _guildConverter = new GuildConverter();
+            _volunteerConverter = new VolunteerConverter();
         }
 
         public GuildBO Create(GuildBO bo)
@@ -51,7 +53,17 @@ namespace VolunteerRegistrationBLL.Services
         {
             using (var uow = _facade.UnitOfWork)
             {
-                return _guildConverter.Convert(uow.GuildRepository.Get(id));
+                var guildFromDB = uow.GuildRepository.Get(id);
+                if (guildFromDB == null) return null;
+                var convertedGuild = _guildConverter.Convert(guildFromDB);
+
+                if (convertedGuild.VolunteerIds == null) return convertedGuild;
+                {
+                    convertedGuild.Volunteers = uow.VolunteerRepository.GetVolunteersWithIds(convertedGuild.VolunteerIds)
+                        ?.Select(v => _volunteerConverter.Convert(v))
+                        .ToList();
+                }
+                return convertedGuild;
             }
         }
 
@@ -74,8 +86,7 @@ namespace VolunteerRegistrationBLL.Services
             {
                 var entityToDelete = uow.GuildRepository.Delete(id);
                 uow.Complete();
-                if (entityToDelete == null) return false;
-                return true;
+                return entityToDelete != null;
             }
         }
     }

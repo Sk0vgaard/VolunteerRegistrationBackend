@@ -1,4 +1,5 @@
-﻿using VolunteerRegistrationBLL.BusinessObjects;
+﻿using System.Linq;
+using VolunteerRegistrationBLL.BusinessObjects;
 using VolunteerRegistrationDAL.Entities;
 
 namespace VolunteerRegistrationBLL.Converters
@@ -14,7 +15,12 @@ namespace VolunteerRegistrationBLL.Converters
                 Id = businessObject.Id,
                 Name = businessObject.Name,
                 Email = businessObject.Email,
-                Phone = businessObject.Phone
+                Phone = businessObject.Phone,
+                Guilds = businessObject.GuildIds?.Select(gId => new GuildWork
+                {
+                    VolunteerId = businessObject.Id,
+                    GuildId = gId
+                }).ToList()
             };
         }
 
@@ -27,7 +33,8 @@ namespace VolunteerRegistrationBLL.Converters
                 Id = entity.Id,
                 Name = entity.Name,
                 Email = entity.Email,
-                Phone = entity.Phone
+                Phone = entity.Phone,
+                GuildIds = entity.Guilds?.Select(g => g.GuildId).ToList()
             };
         }
     }
