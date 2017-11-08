@@ -6,6 +6,6 @@ namespace VolunteerRegistrationDAL.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<GuildWork> Volunteers { get; set; }
+        public List<GuildWork> GuildWork { get; set; }
     }
 }

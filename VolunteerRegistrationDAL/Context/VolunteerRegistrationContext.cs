@@ -7,7 +7,6 @@ namespace VolunteerRegistrationDAL.Context
     {
         public VolunteerRegistrationContext(DbContextOptions<VolunteerRegistrationContext> options) : base(options)
         {
-
             Database.EnsureCreated();
         }
 
@@ -20,7 +19,7 @@ namespace VolunteerRegistrationDAL.Context
             // Define Guild with relation and foreignkey
             modelBuilder.Entity<GuildWork>()
                 .HasOne(gw => gw.Guild)
-                .WithMany(v => v.Volunteers)
+                .WithMany(v => v.GuildWork)
                 .HasForeignKey(gw => gw.GuildId);
 
             // Define Volunteer with relation and foreignkey
