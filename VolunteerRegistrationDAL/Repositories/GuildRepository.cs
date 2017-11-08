@@ -24,7 +24,7 @@ namespace VolunteerRegistrationDAL.Repositories
 
         public IEnumerable<Guild> GetAll()
         {
-            return _context.Guilds.Include(g => g.Volunteers).ToList();
+            return _context.Guilds.Include(g => g.GuildWork).ToList();
         }
 
         public IEnumerable<Guild> GetAll(List<int> ids)
@@ -35,7 +35,7 @@ namespace VolunteerRegistrationDAL.Repositories
 
         public Guild Get(int id)
         {
-            return _context.Guilds.Include(g => g.Volunteers).FirstOrDefault(g => g.Id == id);
+            return _context.Guilds.Include(g => g.GuildWork).FirstOrDefault(g => g.Id == id);
         }
 
         public Guild Delete(int Id)

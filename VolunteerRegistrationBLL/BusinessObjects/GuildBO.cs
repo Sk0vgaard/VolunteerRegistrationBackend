@@ -13,5 +13,6 @@ namespace VolunteerRegistrationBLL.BusinessObjects
 
         public List<int> VolunteerIds { get; set; }
         public List<VolunteerBO> Volunteers { get; set; }
+        public List<GuildWorkBO> GuildWork { get; set; }
     }
 }
