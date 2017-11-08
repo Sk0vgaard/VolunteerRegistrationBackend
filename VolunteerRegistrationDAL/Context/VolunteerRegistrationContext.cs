@@ -7,13 +7,28 @@ namespace VolunteerRegistrationDAL.Context
     {
         public VolunteerRegistrationContext(DbContextOptions<VolunteerRegistrationContext> options) : base(options)
         {
-
             Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
+            // Define new GuildWork with keys
+            modelBuilder.Entity<GuildWork>()
+                .HasKey(gw => new {gw.GuildId, gw.VolunteerId});
+
+            // Define Guild with relation and foreignkey
+            modelBuilder.Entity<GuildWork>()
+                .HasOne(gw => gw.Guild)
+                .WithMany(v => v.GuildWork)
+                .HasForeignKey(gw => gw.GuildId);
+
+            // Define Volunteer with relation and foreignkey
+            modelBuilder.Entity<GuildWork>()
+                .HasOne(gw => gw.Volunteer)
+                .WithMany(g => g.Guilds)
+                .HasForeignKey(gw => gw.VolunteerId);
+
+
             base.OnModelCreating(modelBuilder);
         }
 
