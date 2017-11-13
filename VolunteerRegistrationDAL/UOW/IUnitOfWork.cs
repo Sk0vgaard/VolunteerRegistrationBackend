@@ -7,6 +7,7 @@ namespace VolunteerRegistrationDAL.UOW
     {
         IVolunteerRepository VolunteerRepository { get;}
         IGuildRepository GuildRepository { get;} 
+        IGuildManagerRepository GuildManagerRepository { get; }
 
         int Complete();
     }

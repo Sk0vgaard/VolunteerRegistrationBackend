@@ -10,6 +10,7 @@ namespace VolunteerRegistrationDAL.UOW
         public IGuildRepository GuildRepository { get; }
 
         public IVolunteerRepository VolunteerRepository { get; }
+        public IGuildManagerRepository GuildManagerRepository { get; }
 
         public UnitOfWork(VolunteerRegistrationContext context)
         {
@@ -17,6 +18,7 @@ namespace VolunteerRegistrationDAL.UOW
 
             VolunteerRepository = new VolunteerRepository(_context);
             GuildRepository = new GuildRepository(_context);
+            GuildManagerRepository = new GuildManagerRepository(_context);
         }
 
         public int Complete()
