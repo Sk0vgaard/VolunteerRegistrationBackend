@@ -33,7 +33,9 @@ namespace VRBDALTests
         [Fact]
         public void GetAll()
         {
-            throw new System.NotImplementedException();
+            CreateMockGM();
+            var entities = _repository.GetAll();
+            Assert.NotEmpty(entities);
         }
         [Fact]
         public void GetOneByExistingId()

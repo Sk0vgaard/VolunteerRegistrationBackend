@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using VolunteerRegistrationDAL.Context;
 using VolunteerRegistrationDAL.Entities;
 
@@ -18,7 +19,7 @@ namespace VolunteerRegistrationDAL.Repositories
 
         public IEnumerable<GuildManager> GetAll()
         {
-            throw new System.NotImplementedException();
+            return _context.GuildManagers.ToList();
         }
 
         public IEnumerable<GuildManager> GetAll(List<int> ids)
