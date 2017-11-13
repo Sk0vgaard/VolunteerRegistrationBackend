@@ -23,6 +23,7 @@ namespace VolunteerRegistrationBLL.Services
             {
                 var convertedEntityForDB = _guildManagerConverter.Convert(bo);
                 var createdEntity = unitOfWork.GuildManagerRepository.Create(convertedEntityForDB);
+                unitOfWork.Complete();
                 return _guildManagerConverter.Convert(createdEntity);
             }
         }
