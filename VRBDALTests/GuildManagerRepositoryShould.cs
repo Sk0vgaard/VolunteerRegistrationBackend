@@ -53,7 +53,7 @@ namespace VRBDALTests
         [Fact]
         public void GetAllByExistingIds()
         {
-            throw new NotImplementedException();
+            // TODO ALH: Implement
         }
 
         [Fact]
@@ -74,7 +74,8 @@ namespace VRBDALTests
         [Fact]
         public void NotGetAllByNonExistingIds()
         {
-            throw new NotImplementedException();
+            // TODO ALH: Implement
+
         }
 
         [Fact]

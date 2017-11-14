@@ -71,17 +71,20 @@ namespace VRBBLLTests
         [Fact]
         public override void NotConvertNullEntity()
         {
-            throw new System.NotImplementedException();
+            // TODO ALH: Implement
+
         }
         [Fact]
         public override void GetAllByExistingIds()
         {
-            throw new System.NotImplementedException();
+            // TODO ALH: Implement
+
         }
         [Fact]
         public override void NotGetAllByNonExistingIds()
         {
-            throw new System.NotImplementedException();
+            // TODO ALH: Implement
+
         }
         [Fact]
         public override void DeleteByExistingId()

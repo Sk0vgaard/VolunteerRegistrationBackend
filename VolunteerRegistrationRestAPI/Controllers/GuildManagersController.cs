@@ -43,8 +43,12 @@ namespace VolunteerRegistrationRestAPI.Controllers
 
         // PUT: api/GuildManagers/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] GuildManagerBO value)
         {
+            if (id != value.Id) return BadRequest("Id does not match guild id!");
+            var entity = _service.Update(value);
+            if (entity == null) return NotFound();
+            return Ok(entity);
         }
 
         // DELETE: api/ApiWithActions/5
