@@ -7,7 +7,7 @@ namespace VolunteerRegistrationDAL.Repositories
 {
     public class GuildManagerRepository: IGuildManagerRepository
     {
-        private VolunteerRegistrationContext _context;
+        private readonly VolunteerRegistrationContext _context;
         public GuildManagerRepository(VolunteerRegistrationContext context)
         {
             _context = context;

@@ -104,12 +104,24 @@ namespace VRBBLLTests
         [Fact]
         public override void UpdateByExistingId()
         {
-            throw new System.NotImplementedException();
+            var createdEntity = MockGM;
+            _mockGMRepo.Setup(r => r.Get(createdEntity.Id)).Returns(createdEntity);
+            var entityToUpdate = MockGMBO;
+            var updatedName = "Updated";
+            entityToUpdate.Name = updatedName;
+            _service.Update(entityToUpdate);
+            var updatedEntity = _service.Get(createdEntity.Id);
+            Assert.Equal(updatedName, updatedEntity.Name);
         }
         [Fact]
         public override void NotUpdateByNonExistingId()
         {
-            throw new System.NotImplementedException();
+            var entityToUpdate = new GuildManagerBO{Id = 2};
+            var updatedName = "Updated";
+            entityToUpdate.Name = updatedName;
+            _service.Update(entityToUpdate);
+            var updatedEntity = _service.Get(entityToUpdate.Id);
+            Assert.Null(updatedEntity);
         }
     }
 }

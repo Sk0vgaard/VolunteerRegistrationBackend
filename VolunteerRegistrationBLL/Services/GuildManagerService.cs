@@ -51,7 +51,15 @@ namespace VolunteerRegistrationBLL.Services
 
         public GuildManagerBO Update(GuildManagerBO bo)
         {
-            throw new System.NotImplementedException();
+            using (var unitOfWork = _facade.UnitOfWork)
+            {
+                var entityToUpdate = unitOfWork.GuildManagerRepository.Get(bo.Id);
+                if (entityToUpdate == null) return null;
+                entityToUpdate.Name = bo.Name;
+                entityToUpdate.Email = bo.Email;
+                unitOfWork.Complete();
+                return bo;
+            }
         }
 
         public bool Delete(int id)
