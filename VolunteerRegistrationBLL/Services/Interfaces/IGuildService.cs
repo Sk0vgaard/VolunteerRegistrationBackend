@@ -8,5 +8,6 @@ namespace VolunteerRegistrationBLL.Services.Interfaces
 {
     public interface IGuildService : IService<GuildBO>
     {
+        IEnumerable<GuildWorkBO> GetGuidWorksFromGuild(int idOfGuild);
     }
 }

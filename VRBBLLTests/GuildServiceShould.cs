@@ -172,5 +172,37 @@ namespace VRBBLLTests
             var entity = _service.Update(nonExistingGuild);
             Assert.Null(entity);
         }
+
+        [Fact]
+        public void GetGuildWorksFromGuildWithId()
+        {
+            const int id = 1;
+            
+            _mockGuildRepo.Setup(r => r.Get(It.IsAny<int>()))
+                .Returns(new Guild {GuildWork = new List<GuildWork>
+                {
+                    new GuildWork(), new GuildWork()
+                }});
+            var result = _service.GetGuidWorksFromGuild(id);
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void NotGetGuildWorksFromGuildWithNoId()
+        {
+            var id = 0;
+            _mockGuildRepo.Setup(r => r.Get(id)).Returns(() => null);
+            var result = _service.GetGuidWorksFromGuild(id);
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public void NotGetGuildWorksFromGuildWithNoGuildWorks()
+        {
+            var id = 1;
+            _mockGuildRepo.Setup(r => r.Get(It.IsAny<int>())).Returns(new Guild());
+            var result = _service.GetGuidWorksFromGuild(id);
+            Assert.Null(result);
+        }
     }
 }
