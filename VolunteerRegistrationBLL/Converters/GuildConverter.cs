@@ -9,6 +9,7 @@ namespace VolunteerRegistrationBLL.Converters
 {
     internal class GuildConverter : IConverter<Guild, GuildBO>
     {
+        private GuildWorkConverter _gwConverter = new GuildWorkConverter();
         public Guild Convert(GuildBO businessObject)
         {
             if (businessObject == null) return null;
@@ -16,11 +17,7 @@ namespace VolunteerRegistrationBLL.Converters
             {
                 Id = businessObject.Id,
                 Name = businessObject.Name,
-                Volunteers = businessObject.VolunteerIds?.Select(vId => new GuildWork
-                {
-                    GuildId = businessObject.Id,
-                    VolunteerId = vId
-                }).ToList()
+                GuildWork = businessObject.GuildWork?.Select(_gwConverter.Convert).ToList()
             };
         }
 
@@ -31,7 +28,8 @@ namespace VolunteerRegistrationBLL.Converters
             {
                 Id = entity.Id,
                 Name = entity.Name,
-                VolunteerIds = entity.Volunteers?.Select(v => v.VolunteerId).ToList()
+                VolunteerIds = entity.GuildWork?.Select(v => v.VolunteerId).ToList(),
+                GuildWork = entity.GuildWork?.Select(_gwConverter.Convert).ToList()
             };
         }
     }

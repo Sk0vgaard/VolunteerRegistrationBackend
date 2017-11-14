@@ -86,8 +86,7 @@ namespace VolunteerRegistrationBLL.Services
             {
                 var entityToDelete = uow.GuildRepository.Delete(id);
                 uow.Complete();
-                if (entityToDelete == null) return false;
-                return true;
+                return entityToDelete != null;
             }
         }
     }

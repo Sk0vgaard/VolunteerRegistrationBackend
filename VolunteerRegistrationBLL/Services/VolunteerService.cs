@@ -87,8 +87,7 @@ namespace VolunteerRegistrationBLL.Services
             {
                 var entityToDelete = unitOfWork.VolunteerRepository.Delete(id);
                 unitOfWork.Complete();
-                if (entityToDelete == null) return false;
-                return true;
+                return entityToDelete != null;
             }
         }
     }

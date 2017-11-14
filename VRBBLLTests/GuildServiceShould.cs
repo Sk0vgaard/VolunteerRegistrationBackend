@@ -48,13 +48,13 @@ namespace VRBBLLTests
         }
 
         [Fact]
-        public void GetOneByExistingIdWithGuilds()
+        public void GetOneByExistingIdWithVolunteers()
         {
             var volunteer = new VolunteerBO { Id = 1 };
             _mockGuildRepo.Setup(r => r.Get(volunteer.Id)).Returns(new Guild()
             {
                 Id = 1,
-                Volunteers = new List<GuildWork>
+                GuildWork = new List<GuildWork>
                 {
                     new GuildWork
                     {
@@ -76,6 +76,31 @@ namespace VRBBLLTests
             Assert.NotNull(entity);
             Assert.NotEmpty(entity.Volunteers);
         }
+
+        [Fact]
+        public void GetOneByIdWithGuildWork()
+        {
+            var guildFromDB = new Guild
+            {
+                Id = 1,
+                Name = "D4FF",
+                GuildWork = new List<GuildWork>
+                {
+                    new GuildWork{GuildId = 1, VolunteerId = 1}
+                }
+            };
+
+            var volunteers = new List<Volunteer>{new Volunteer{Id = 1}};
+
+            _mockGuildRepo.Setup(r => r.Get(It.IsAny<int>())).Returns(guildFromDB);
+            var volunteerRepo = new Mock<IVolunteerRepository>();
+            MockUOW.SetupGet(uow => uow.VolunteerRepository).Returns(volunteerRepo.Object);
+            volunteerRepo.Setup(r => r.GetVolunteersWithIds(It.IsAny<List<int>>())).Returns(volunteers);
+            
+            var result = _service.Get(1);
+            Assert.NotEmpty(result.GuildWork);
+        }
+
         [Fact]
         public override void NotGetOneByNonExistingId()
         {
@@ -84,12 +109,14 @@ namespace VRBBLLTests
             var entity = _service.Get(nonExistingId);
             Assert.Null(entity);
         }
+
         [Fact]
         public override void NotConvertNullEntity()
         {
             var entity = _service.Create(null);
             Assert.Null(entity);
         }
+
         [Fact]
         public override void GetAllByExistingIds()
         {
@@ -98,6 +125,7 @@ namespace VRBBLLTests
             var entities = _service.GetAll(new List<int>() {guild.Id});
             Assert.NotEmpty(entities);
         }
+
         [Fact]
         public override void NotGetAllByNonExistingIds()
         {
@@ -105,6 +133,7 @@ namespace VRBBLLTests
             var entities = _service.GetAll(new List<int>());
             Assert.Empty(entities);
         }
+
         [Fact]
         public override void DeleteByExistingId()
         {
@@ -113,6 +142,7 @@ namespace VRBBLLTests
             var deleted = _service.Delete(entity.Id);
             Assert.True(deleted);
         }
+
         [Fact]
         public override void NotDeleteByNonExistingId()
         {
@@ -121,6 +151,7 @@ namespace VRBBLLTests
             var deleted = _service.Delete(nonExistingId);
             Assert.False(deleted);
         }
+
         [Fact]
         public override void UpdateByExistingId()
         {
@@ -132,6 +163,7 @@ namespace VRBBLLTests
             var updatedGuild = _service.Update(guildToUpdate);
             Assert.Contains(updatedGuild.Name, newName);
         }
+
         [Fact]
         public override void NotUpdateByNonExistingId()
         {

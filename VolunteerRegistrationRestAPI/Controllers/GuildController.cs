@@ -62,7 +62,7 @@ namespace VolunteerRegistrationRestAPI.Controllers
         {
             var deleted = _guildService.Delete(id);
             if (deleted == false) return NotFound();
-            return Ok();
+            return Ok(deleted);
         }
     }
 }
