@@ -72,5 +72,13 @@ namespace VolunteerRegistrationRestAPI.Controllers
             if (deleted == false) return NotFound();
             return Ok(deleted);
         }
+
+        [HttpGet]
+        [Route("guildWork")]
+        public IActionResult GetGuildWorks([FromQuery] int id)
+        {
+            var guildWorks = _guildService.GetGuidWorksFromGuild(id);
+            return Ok(guildWorks);
+        }
     }
 }
