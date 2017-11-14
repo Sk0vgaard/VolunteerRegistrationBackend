@@ -89,5 +89,16 @@ namespace VolunteerRegistrationBLL.Services
                 return entityToDelete != null;
             }
         }
+
+        public IEnumerable<GuildWorkBO> GetGuidWorksFromGuild(int idOfGuild)
+        {
+            using (var uow = _facade.UnitOfWork)
+            {
+                var guild = uow.GuildRepository.Get(idOfGuild);
+                if (guild == null) return null;
+                var guildBO = _guildConverter.Convert(guild);
+                return guildBO.GuildWork;
+            }
+        }
     }
 }
