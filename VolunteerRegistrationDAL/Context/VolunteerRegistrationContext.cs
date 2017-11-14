@@ -15,7 +15,7 @@ namespace VolunteerRegistrationDAL.Context
         {
             // Define new GuildWork with keys
             modelBuilder.Entity<GuildWork>()
-                .HasKey(gw => new {gw.GuildId, gw.VolunteerId});
+                .HasKey(gw => new {gw.GuildId, gw.VolunteerId, gw.Start, gw.End});
 
             // Define Guild with relation and foreignkey
             modelBuilder.Entity<GuildWork>()

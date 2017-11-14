@@ -14,12 +14,14 @@ namespace VolunteerRegistrationBLL.Services
     {
         private readonly IDALFacade _facade;
         private readonly IConverter<Guild, GuildBO> _guildConverter;
+        private readonly GuildWorkConverter _gwConverter;
         private readonly VolunteerConverter _volunteerConverter;
 
         public GuildService(IDALFacade facade)
         {
             _facade = facade;
             _guildConverter = new GuildConverter();
+            _gwConverter = new GuildWorkConverter();
             _volunteerConverter = new VolunteerConverter();
         }
 
@@ -87,6 +89,17 @@ namespace VolunteerRegistrationBLL.Services
                 var entityToDelete = uow.GuildRepository.Delete(id);
                 uow.Complete();
                 return entityToDelete != null;
+            }
+        }
+
+        public bool AddGuildWork(GuildWorkBO guildWork)
+        {
+            using (var unitOfWork = _facade.UnitOfWork)
+            {
+                var guild = unitOfWork.GuildRepository.Get(guildWork.GuildId);
+                guild.GuildWork.Add(_gwConverter.Convert(guildWork));
+                unitOfWork.Complete();
+                return true;
             }
         }
     }
