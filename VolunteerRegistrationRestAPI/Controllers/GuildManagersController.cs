@@ -25,9 +25,11 @@ namespace VolunteerRegistrationRestAPI.Controllers
 
         // GET: api/GuildManagers/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            var entity = _service.Get(id);
+            if (entity == null) return NotFound();
+            return Ok(entity);
         }
 
         // POST: api/GuildManagers
@@ -47,8 +49,11 @@ namespace VolunteerRegistrationRestAPI.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            var deleted = _service.Delete(id);
+            if (deleted == false) return NotFound();
+            return Ok(deleted);
         }
     }
 }
