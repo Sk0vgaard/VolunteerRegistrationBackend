@@ -35,7 +35,11 @@ namespace VRBDALTests
         [Fact]
         public void DeleteByExistingId()
         {
-            throw new NotImplementedException();
+            var entityToDelete = CreateMockGM();
+            _repository.Delete(entityToDelete.Id);
+            _context.SaveChanges();
+            var deletedEntity = _repository.Get(entityToDelete.Id);
+            Assert.Null(deletedEntity);
         }
 
         [Fact]
@@ -55,7 +59,9 @@ namespace VRBDALTests
         [Fact]
         public void GetOneByExistingId()
         {
-            throw new NotImplementedException();
+            var createdEntity = CreateMockGM();
+            var entity = _repository.Get(createdEntity.Id);
+            Assert.NotNull(entity);
         }
 
         [Fact]

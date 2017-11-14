@@ -29,12 +29,14 @@ namespace VolunteerRegistrationDAL.Repositories
 
         public GuildManager Get(int id)
         {
-            throw new System.NotImplementedException();
+            return _context.GuildManagers.FirstOrDefault(gm => gm.Id == id);
         }
 
         public GuildManager Delete(int id)
         {
-            throw new System.NotImplementedException();
+            var entityToDelete = _context.GuildManagers.FirstOrDefault(gm => gm.Id == id);
+            return entityToDelete == null ? 
+                null : _context.Remove(entityToDelete).Entity;
         }
     }
 }
