@@ -67,7 +67,8 @@ namespace VRBDALTests
         [Fact]
         public void NotDeleteByNonExistingId()
         {
-            throw new NotImplementedException();
+            var deletedEntity = _repository.Get(0);
+            Assert.Null(deletedEntity);
         }
 
         [Fact]
@@ -79,7 +80,8 @@ namespace VRBDALTests
         [Fact]
         public void NotGetOneByNonExistingId()
         {
-            throw new NotImplementedException();
+            var entity = _repository.Get(0);
+            Assert.Null(entity);
         }
     }
 }

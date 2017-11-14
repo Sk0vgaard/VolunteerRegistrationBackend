@@ -56,12 +56,17 @@ namespace VRBBLLTests
         [Fact]
         public override void GetOneByExistingId()
         {
-            throw new System.NotImplementedException();
+            var createdEntity = MockGM;
+            _mockGMRepo.Setup(r => r.Get(createdEntity.Id)).Returns(() => createdEntity);
+
+            var entity = _service.Get(createdEntity.Id);
+            Assert.NotNull(entity);
         }
         [Fact]
         public override void NotGetOneByNonExistingId()
         {
-            throw new System.NotImplementedException();
+            var entity = _service.Get(0);
+            Assert.Null(entity);
         }
         [Fact]
         public override void NotConvertNullEntity()
@@ -81,12 +86,20 @@ namespace VRBBLLTests
         [Fact]
         public override void DeleteByExistingId()
         {
-            throw new System.NotImplementedException();
+            var createdEntity = MockGM;
+            _mockGMRepo.Setup(r => r.Get(createdEntity.Id)).Returns(createdEntity);
+            _mockGMRepo.Setup(r => r.Delete(createdEntity.Id)).Returns(createdEntity);
+
+            var deletedEntity = _service.Delete(createdEntity.Id);
+
+            Assert.True(deletedEntity);
         }
         [Fact]
         public override void NotDeleteByNonExistingId()
         {
-            throw new System.NotImplementedException();
+            var deletedEntity = _service.Delete(0);
+
+            Assert.False(deletedEntity);
         }
         [Fact]
         public override void UpdateByExistingId()

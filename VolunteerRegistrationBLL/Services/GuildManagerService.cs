@@ -10,7 +10,7 @@ namespace VolunteerRegistrationBLL.Services
     public class GuildManagerService : IGuildManagerService
     {
         private readonly IDALFacade _facade;
-        private GuildManagerConverter _guildManagerConverter;
+        private readonly GuildManagerConverter _guildManagerConverter;
 
         public GuildManagerService(IDALFacade facade)
         {
@@ -43,7 +43,10 @@ namespace VolunteerRegistrationBLL.Services
 
         public GuildManagerBO Get(int id)
         {
-            throw new System.NotImplementedException();
+            using (var unitOfWork = _facade.UnitOfWork)
+            {
+                return _guildManagerConverter.Convert(unitOfWork.GuildManagerRepository.Get(id));
+            }
         }
 
         public GuildManagerBO Update(GuildManagerBO bo)
@@ -53,7 +56,14 @@ namespace VolunteerRegistrationBLL.Services
 
         public bool Delete(int id)
         {
-            throw new System.NotImplementedException();
+            using (var unitOfWork = _facade.UnitOfWork)
+            {
+                var entity = unitOfWork.GuildManagerRepository.Get(id);
+                if (entity == null) return false;
+                unitOfWork.GuildManagerRepository.Delete(id);
+                unitOfWork.Complete();
+                return true;
+            }
         }
     }
 }
