@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using VolunteerRegistrationBLL.BusinessObjects;
 using VolunteerRegistrationBLL.Services.Interfaces;
 
@@ -45,6 +46,13 @@ namespace VolunteerRegistrationRestAPI.Controllers
             var createdGuild = _guildService.Create(guild);
             return Ok(createdGuild);
         }
+
+        [HttpPost]
+        [Route("guildWork")]
+        public IActionResult PostGuildWork([FromBody]GuildWorkBO work)
+        {
+            return Ok(_guildService.AddGuildWork(work));
+        }
         
         // PUT: api/Guild/5
         [HttpPut("{id}")]
@@ -62,7 +70,15 @@ namespace VolunteerRegistrationRestAPI.Controllers
         {
             var deleted = _guildService.Delete(id);
             if (deleted == false) return NotFound();
-            return Ok();
+            return Ok(deleted);
+        }
+
+        [HttpGet]
+        [Route("guildWork")]
+        public IActionResult GetGuildWorks([FromQuery] int id)
+        {
+            var guildWorks = _guildService.GetGuidWorksFromGuild(id);
+            return Ok(guildWorks);
         }
     }
 }

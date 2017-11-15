@@ -14,11 +14,15 @@ namespace VolunteerRegistrationBLL.Services
     {
         private readonly IDALFacade _facade;
         private readonly IConverter<Guild, GuildBO> _guildConverter;
+        private readonly GuildWorkConverter _gwConverter;
+        private readonly VolunteerConverter _volunteerConverter;
 
         public GuildService(IDALFacade facade)
         {
             _facade = facade;
             _guildConverter = new GuildConverter();
+            _gwConverter = new GuildWorkConverter();
+            _volunteerConverter = new VolunteerConverter();
         }
 
         public GuildBO Create(GuildBO bo)
@@ -51,7 +55,17 @@ namespace VolunteerRegistrationBLL.Services
         {
             using (var uow = _facade.UnitOfWork)
             {
-                return _guildConverter.Convert(uow.GuildRepository.Get(id));
+                var guildFromDB = uow.GuildRepository.Get(id);
+                if (guildFromDB == null) return null;
+                var convertedGuild = _guildConverter.Convert(guildFromDB);
+
+                if (convertedGuild.VolunteerIds == null) return convertedGuild;
+                {
+                    convertedGuild.Volunteers = uow.VolunteerRepository.GetVolunteersWithIds(convertedGuild.VolunteerIds)
+                        ?.Select(v => _volunteerConverter.Convert(v))
+                        .ToList();
+                }
+                return convertedGuild;
             }
         }
 
@@ -74,8 +88,29 @@ namespace VolunteerRegistrationBLL.Services
             {
                 var entityToDelete = uow.GuildRepository.Delete(id);
                 uow.Complete();
-                if (entityToDelete == null) return false;
+                return entityToDelete != null;
+            }
+        }
+
+        public bool AddGuildWork(GuildWorkBO guildWork)
+        {
+            using (var unitOfWork = _facade.UnitOfWork)
+            {
+                var guild = unitOfWork.GuildRepository.Get(guildWork.GuildId);
+                guild.GuildWork.Add(_gwConverter.Convert(guildWork));
+                unitOfWork.Complete();
                 return true;
+            }
+        }
+
+        public IEnumerable<GuildWorkBO> GetGuidWorksFromGuild(int idOfGuild)
+        {
+            using (var uow = _facade.UnitOfWork)
+            {
+                var guild = uow.GuildRepository.Get(idOfGuild);
+                if (guild == null) return null;
+                var guildBO = _guildConverter.Convert(guild);
+                return guildBO.GuildWork;
             }
         }
     }
